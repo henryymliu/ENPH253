@@ -1,0 +1,2 @@
+# intersectionPrototype1 build property overrides
+#
