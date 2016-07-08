@@ -51,6 +51,10 @@ extern "C" void __cxa_pure_virtual() {;}
 #undef PSTR
 #define PSTR(string_literal) ((const PROGMEM char *)(string_literal))")
 #include <main.ino>
+#include <menu.cpp>
+#include <menu.h>
+#include <navigation.cpp>
+#include <navigation.h>
 #include <tapeFollow.cpp>
 #include <tapeFollow.h>
 #endif

@@ -8,6 +8,8 @@
 
 //NOTE: ADD HEADERS HERE
 
+#include "navigation.h"
+#include "menu.h"
 #include <phys253.h>          
 #include <LiquidCrystal.h> 
 #include "tapeFollow.h"
@@ -22,7 +24,7 @@ void setup() {
 
 tapeFollow tf;
 void loop() {
-	tf.followTape();
+	tf.followTape(500);
 	
 }
 

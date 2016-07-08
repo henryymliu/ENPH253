@@ -7,11 +7,17 @@
 #define TD_L 2
 #define TD_R 1
 
-#define ID_L 3
+#define ID_R 3
 #define ID_L 0
 
 #define KP_KNOB 6
 #define KD_KNOB 7
+
+#define L_MOTOR 0
+#define R_MOTOR 3
+
+#define INTERSECTION_TURNING_DELAY_MILLI 500
+#define INTERSECTION_TURNING_DEADZONE 1000
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
@@ -22,9 +28,11 @@
 
 class tapeFollow{
 public:
-	int motorSpeed = 500;
+	//int motorSpeed = 500;
 	int error;
-	void followTape();
+	void followTape(int motorSpeed);
+	void turnLeft();
+	void turnRight();
 
 private:
 	double kp;
@@ -45,6 +53,9 @@ private:
 	int m = 1;
 	int q;
 
+	int intersectLeft;
+	int intersectRight;
+	unsigned long currTime;
 };
 	
 
