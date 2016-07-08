@@ -3,38 +3,18 @@
 #include <LiquidCrystal.h> 
 #include "tapeFollow.h"
 
-namespace tapeFollow {
-	int motorSpeed = 500;
 
-	double kp;
-	double kd;
-	double gain;
-	int thresh;
-
-	int left;
-	int right;
-
-	int error;
-	int lerr = 0;
-	int recerr = 0;
-	int c = 0;
-
-	double p;
-	double d;
-	double cons;
-	int m = 1;
-	int q;
 
 	//same tape following algo as in lab 5
-	void followTape() {
+	void tapeFollow::followTape() {
 
-		kp = knob(6);
-		kd = knob(7);
+		kp = knob(KP_KNOB);
+		kd = knob(KD_KNOB);
 		gain = 20;
 		thresh = 30;
 
-		left = analogRead(0);
-		right = analogRead(3);
+		left = analogRead(TD_L);
+		right = analogRead(TD_R);
 
 		if ((left >= thresh) && (right >= thresh))
 			error = 0;
@@ -90,4 +70,4 @@ namespace tapeFollow {
 		motor.speed(3, motorSpeed - cons);
 	}
 
-}
+
