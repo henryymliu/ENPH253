@@ -17,5 +17,17 @@
   <ItemGroup>
     <None Include="intersectionPrototype1.ino" />
   </ItemGroup>
- 
+  <ItemGroup>
+    <ClInclude Include="tapeFollow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="__vm\.intersectionPrototype1.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="tapeFollow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>

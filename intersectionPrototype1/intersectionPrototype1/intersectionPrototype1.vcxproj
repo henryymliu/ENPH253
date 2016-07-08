@@ -79,6 +79,9 @@
     <ClInclude Include="tapeFollow.h" />
     <ClInclude Include="__vm\.intersectionPrototype1.vsarduino.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="tapeFollow.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -51,6 +51,5 @@ extern "C" void __cxa_pure_virtual() {;}
 #undef PSTR
 #define PSTR(string_literal) ((const PROGMEM char *)(string_literal))")
 #include <intersectionPrototype1.ino>
-#include <tapeFollow.cpp>
 #include <tapeFollow.h>
 #endif

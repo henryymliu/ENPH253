@@ -1,24 +1,32 @@
-// 
-// 
-// 
 
-#include "tapeFollow.h"
-#include <ServoTINAH.h>
-#include <phys253pins.h>
-#include <motor.h>
 #include <phys253.h>          
 #include <LiquidCrystal.h> 
+#include "tapeFollow.h"
 
-//default constructor
-TapeFollow::TapeFollow() {
+namespace tapeFollow {
+	int motorSpeed = 500;
 
-}
+	double kp;
+	double kd;
+	double gain;
+	int thresh;
 
-//default destructor (not needed)
-TapeFollow::~TapeFollow() {}
+	int left;
+	int right;
 
-//same tape following algo as in lab 5
-TapeFollow::tapeFollow() {
+	int error;
+	int lerr = 0;
+	int recerr = 0;
+	int c = 0;
+
+	double p;
+	double d;
+	double cons;
+	int m = 1;
+	int q;
+
+	//same tape following algo as in lab 5
+	void followTape() {
 
 		kp = knob(6);
 		kd = knob(7);
@@ -30,13 +38,13 @@ TapeFollow::tapeFollow() {
 
 		if ((left >= thresh) && (right >= thresh))
 			error = 0;
-		if ((left >= thresh) && (right<thresh))
+		if ((left >= thresh) && (right < thresh))
 			error = -1;
-		if ((left<thresh) && (right >= thresh))
+		if ((left < thresh) && (right >= thresh))
 			error = 1;
-		if ((left<thresh) && (right<thresh)) {
-			if (lerr>0) error = 5;
-			if (lerr<0) error = -5;
+		if ((left < thresh) && (right < thresh)) {
+			if (lerr > 0) error = 5;
+			if (lerr < 0) error = -5;
 		}
 
 		if (error != lerr) {
@@ -50,6 +58,9 @@ TapeFollow::tapeFollow() {
 		cons = p + d;
 		Serial.print("cons: "); Serial.print(cons);
 		Serial.print("err: "); Serial.print(error + "\n");
+
+		//temp print to screen stuff for debugging; in actual implementation abstract
+		//these values into getter functions, and print only in menu
 		if (c >= 30) {
 			LCD.clear();LCD.home();
 			LCD.print("R:");
@@ -77,6 +88,6 @@ TapeFollow::tapeFollow() {
 		c++;
 		motor.speed(0, motorSpeed + cons);
 		motor.speed(3, motorSpeed - cons);
+	}
+
 }
-
-
