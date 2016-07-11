@@ -8,8 +8,8 @@
 	//same tape following algo as in lab 5
 	void tapeFollow::followTape(int motorSpeed) {
 
-		kp = knob(KP_KNOB);
-		kd = knob(KD_KNOB);
+		kp = map(knob(KP_KNOB), 0, 0, 1024, 99);
+		kd = map(knob(KD_KNOB), 0, 0, 1024, 99);
 		gain = 20;
 		thresh = 30;
 
@@ -34,13 +34,14 @@
 		}
 
 		//interrupt function if intersection detected, maybe trigger ISR in the future
-		intersectLeft = analogRead(ID_L);
-		intersectRight = analogRead(ID_R);
+		
 
 		//for now turn, based on first intersection branch detected
 		//delay to ensure robot is successfully tape following before detecting another intersection to prevent
 		//false positives
 		if ((millis() - currTime) > INTERSECTION_TURNING_DEADZONE) {
+			intersectLeft = analogRead(ID_L);
+			intersectRight = analogRead(ID_R);
 			if (intersectLeft >= thresh) {
 				turnLeft();
 			}
@@ -100,8 +101,7 @@
 
 	//future consideration: make angle a parameter to optimize turning
 
-	//for turning, turn left/right a little bit and then set error to be completely left/right off tape
-	//NOTE: CONSIDER ROTATING UNTIL TAPE DETECTORS REDETECT TAPE (while loop)
+	//for turning, turn left/right until tape detectors redetect tape
 	void tapeFollow::turnLeft() {
 		motor.speed(L_MOTOR, -80);
 		motor.speed(R_MOTOR, 80);

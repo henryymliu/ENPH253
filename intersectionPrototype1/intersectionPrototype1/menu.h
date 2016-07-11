@@ -8,13 +8,20 @@
 #else
 	#include "WProgram.h"
 #endif
+
+#include <avr\eeprom.h>
+
 class Menu {
+public:
 	enum MainMenuItems {TFParam ,Strategy, Tests, Competition};
 
 	enum TestMenuItems {TapeFollow, NavTest, ArmTest,IRTest};
 	enum TFParamMenuItems {DispK, SaveK, LoadK};
 	
-	
+	MainMenuItems currMenu = MainMenuItems::TFParam;
+
+	void switchMenu(MainMenuItems menu);
+
 };
 
 #endif
