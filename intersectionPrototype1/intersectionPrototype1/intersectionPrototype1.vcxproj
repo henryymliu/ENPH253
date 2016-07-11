@@ -95,7 +95,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties arduino.upload.port="COM5" />
+      <UserProperties debug.local.portname="COM5" arduino.upload.port="COM5" debug.local.portspeed="9600" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

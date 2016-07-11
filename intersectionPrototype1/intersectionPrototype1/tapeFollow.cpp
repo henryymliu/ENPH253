@@ -40,12 +40,12 @@
 		//for now turn, based on first intersection branch detected
 		//delay to ensure robot is successfully tape following before detecting another intersection to prevent
 		//false positives
-		if (millis() - currTime > INTERSECTION_TURNING_DEADZONE) {
+		if ((millis() - currTime) > INTERSECTION_TURNING_DEADZONE) {
 			if (intersectLeft >= thresh) {
-				//turnLeft();
+				turnLeft();
 			}
 			else if (intersectRight >= thresh) {
-				//turnRight();
+				turnRight();
 			}
 		}
 
@@ -93,25 +93,34 @@
 
 		c++;
 
-		motor.speed(0, motorSpeed + cons);
-		motor.speed(3, motorSpeed - cons);
+		motor.speed(L_MOTOR, motorSpeed + cons);
+		motor.speed(R_MOTOR, motorSpeed - cons);
 	}
 
 
 	//future consideration: make angle a parameter to optimize turning
 
 	//for turning, turn left/right a little bit and then set error to be completely left/right off tape
+	//NOTE: CONSIDER ROTATING UNTIL TAPE DETECTORS REDETECT TAPE (while loop)
 	void tapeFollow::turnLeft() {
-		motor.speed(L_MOTOR, -255);
-		motor.speed(R_MOTOR, 255);
+		motor.speed(L_MOTOR, -80);
+		motor.speed(R_MOTOR, 80);
 		delay(INTERSECTION_TURNING_DELAY_MILLI);
-		error = -5;
+		right = analogRead(TD_R);
+		while (right < thresh) {
+			right = analogRead(TD_R);
+		}
+		error = 0;
 		currTime = millis();
 	}
 	void tapeFollow::turnRight() {
-		motor.speed(L_MOTOR, 255);
-		motor.speed(R_MOTOR, -255);
+		motor.speed(L_MOTOR, 80);
+		motor.speed(R_MOTOR, -80);
 		delay(INTERSECTION_TURNING_DELAY_MILLI);
-		error = 5;
+		left = analogRead(TD_L);
+		while (left < thresh) {
+			left = analogRead(TD_L);
+		}
+		error = 0;
 		currTime = millis();
 	}

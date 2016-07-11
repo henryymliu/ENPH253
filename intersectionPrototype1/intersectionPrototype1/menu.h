@@ -11,6 +11,9 @@
 class Menu {
 	enum MainMenuItems {TFParam ,Strategy, Tests, Competition};
 
+	enum TestMenuItems {TapeFollow, NavTest, ArmTest,IRTest};
+	enum TFParamMenuItems {DispK, SaveK, LoadK};
+	
 	
 };
 

@@ -24,7 +24,7 @@ void setup() {
 
 tapeFollow tf;
 void loop() {
-	tf.followTape(500);
+	tf.followTape(50);
 	
 }
 

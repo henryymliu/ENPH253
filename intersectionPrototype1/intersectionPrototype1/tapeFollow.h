@@ -4,8 +4,8 @@
 #define _TAPEFOLLOW_h
 
 //constants
-#define TD_L 2
-#define TD_R 1
+#define TD_L 1
+#define TD_R 2
 
 #define ID_R 3
 #define ID_L 0
@@ -13,11 +13,11 @@
 #define KP_KNOB 6
 #define KD_KNOB 7
 
-#define L_MOTOR 0
-#define R_MOTOR 3
+#define L_MOTOR 1
+#define R_MOTOR 0
 
-#define INTERSECTION_TURNING_DELAY_MILLI 500
-#define INTERSECTION_TURNING_DEADZONE 1000
+#define INTERSECTION_TURNING_DELAY_MILLI 200
+#define INTERSECTION_TURNING_DEADZONE 2000
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
