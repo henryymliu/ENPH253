@@ -8,6 +8,7 @@
 
 //NOTE: ADD HEADERS HERE
 
+#include "eepromParams.h"
 #include "navigation.h"
 #include "menu.h"
 #include <phys253.h>          
@@ -22,9 +23,9 @@ void setup() {
 
 }
 
-tapeFollow tf;
+//tapeFollow tf;
 void loop() {
-	tf.followTape(50);
+	tapeFollow::followTape(70);
 	
 }
 

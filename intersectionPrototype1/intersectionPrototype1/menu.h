@@ -18,7 +18,7 @@ public:
 	enum TestMenuItems {TapeFollow, NavTest, ArmTest,IRTest};
 	enum TFParamMenuItems {DispK, SaveK, LoadK};
 	
-	MainMenuItems currMenu = MainMenuItems::TFParam;
+	MainMenuItems currMenu = TFParam;
 
 	void switchMenu(MainMenuItems menu);
 

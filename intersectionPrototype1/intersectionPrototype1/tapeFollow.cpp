@@ -3,13 +3,37 @@
 #include <LiquidCrystal.h> 
 #include "tapeFollow.h"
 
+namespace tapeFollow{
 
+//int error = 0;
+	int error;
+	double kp;
+	double kd;
+	double gain;
+	int thresh;
 
-	//same tape following algo as in lab 5
-	void tapeFollow::followTape(int motorSpeed) {
+	int left;
+	int right;
 
-		kp = map(knob(KP_KNOB), 0, 0, 1024, 99);
-		kd = map(knob(KD_KNOB), 0, 0, 1024, 99);
+	int lerr = 0;
+	int recerr = 0;
+	int c = 0;
+
+	double p;
+	double d;
+	double cons;
+	int m = 1;
+	int q;
+
+	int intersectLeft;
+	int intersectRight;
+	unsigned long currTime;
+
+		//same tape following algo as in lab 5
+	void followTape(int motorSpeed) {
+
+		kp = map(knob(KP_KNOB), 0, 1023, 0, 99);
+		kd = map(knob(KD_KNOB), 0, 1023, 0, 99);
 		gain = 20;
 		thresh = 30;
 
@@ -39,17 +63,19 @@
 		//for now turn, based on first intersection branch detected
 		//delay to ensure robot is successfully tape following before detecting another intersection to prevent
 		//false positives
+
+		
 		if ((millis() - currTime) > INTERSECTION_TURNING_DEADZONE) {
 			intersectLeft = analogRead(ID_L);
-			intersectRight = analogRead(ID_R);
+			//intersectRight = analogRead(ID_R);
 			if (intersectLeft >= thresh) {
 				turnLeft();
 			}
 			else if (intersectRight >= thresh) {
-				turnRight();
+				//turnRight();
 			}
 		}
-
+		
 		if (error != lerr) {
 			recerr = lerr;
 			q = m;
@@ -59,8 +85,8 @@
 		p = kp*error;
 		d = kd*((double)error - (double)recerr) / ((double)q + (double)m);
 		cons = p + d;
-		Serial.print("cons: "); Serial.print(cons);
-		Serial.print("err: "); Serial.print(error + "\n");
+		//Serial.print("cons: "); Serial.print(cons);
+		//Serial.print("err: "); Serial.print(error + "\n");
 
 		//temp print to screen stuff for debugging; in actual implementation abstract
 		//these values into getter functions, and print only in menu
@@ -99,28 +125,37 @@
 	}
 
 
-	//future consideration: make angle a parameter to optimize turning
+		//future consideration: make angle a parameter to optimize turning
 
-	//for turning, turn left/right until tape detectors redetect tape
-	void tapeFollow::turnLeft() {
-		motor.speed(L_MOTOR, -80);
-		motor.speed(R_MOTOR, 80);
-		delay(INTERSECTION_TURNING_DELAY_MILLI);
-		right = analogRead(TD_R);
-		while (right < thresh) {
+		//for turning, turn left/right until tape detectors redetect tape
+		void turnLeft() {
+			motor.speed(L_MOTOR, -55);
+			motor.speed(R_MOTOR, 55);
+			delay(INTERSECTION_TURNING_DELAY_MILLI);
 			right = analogRead(TD_R);
+			while (right < thresh) {
+				right = analogRead(TD_R);
+			}
+			error = 0;
+			currTime = millis();
 		}
-		error = 0;
-		currTime = millis();
-	}
-	void tapeFollow::turnRight() {
-		motor.speed(L_MOTOR, 80);
-		motor.speed(R_MOTOR, -80);
-		delay(INTERSECTION_TURNING_DELAY_MILLI);
-		left = analogRead(TD_L);
-		while (left < thresh) {
+		void turnRight() {
+			motor.speed(L_MOTOR, 55);
+			motor.speed(R_MOTOR, -55);
+			delay(INTERSECTION_TURNING_DELAY_MILLI);
 			left = analogRead(TD_L);
+			while (left < thresh) {
+				left = analogRead(TD_L);
+			}
+			error = 0;
+			currTime = millis();
 		}
-		error = 0;
-		currTime = millis();
+
+		double getKd(){
+			return kd;
+		}
+
+		double getKp() {
+			return kp;
+		}
 	}
