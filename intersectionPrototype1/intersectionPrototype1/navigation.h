@@ -9,6 +9,18 @@
 	#include "WProgram.h"
 #endif
 
+#include "path.h"
+#include "IR.h"
+namespace nav {
+	//Navigates from startN to endN.
+	//Returns 0 if successful, otherwise failed with status
+	int navToNode(const courseGraph::node *startN, const courseGraph::node *endN);
+
+
+	
+
+
+}
 
 #endif
 

@@ -51,6 +51,8 @@ extern "C" void __cxa_pure_virtual() {;}
 #undef PSTR
 #define PSTR(string_literal) ((const PROGMEM char *)(string_literal))")
 #include <main.ino>
+#include <IR.cpp>
+#include <IR.h>
 #include <eepromParams.cpp>
 #include <eepromParams.h>
 #include <menu.cpp>

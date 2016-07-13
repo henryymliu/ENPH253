@@ -22,11 +22,11 @@ courseGraph::courseGraph(){
 	node n8;
 	node n9;
 	node n10;
-	node n11;
+	node n11; //endpoint
 	node n12;
 	node n13;
 	node n14;
-	node n15;
+	node n15; //endpoint
 	node n16;
 	node n17;
 	node n18;

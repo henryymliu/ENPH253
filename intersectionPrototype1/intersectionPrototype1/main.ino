@@ -8,6 +8,7 @@
 
 //NOTE: ADD HEADERS HERE
 
+#include "IR.h"
 #include "eepromParams.h"
 #include "navigation.h"
 #include "menu.h"
