@@ -15,7 +15,12 @@ public:
 								 //vector<int> neighbors;
 		const node *neighbors[4];
 		void addNeighbor(const node *n);
+		const node* nextDir(int index) const;
+		const node* prevDir(int index) const;
 		int neighborCount = 0;
+		int i = 0;
+		node *preferred1;
+		node *preferred2;
 	};
 	courseGraph();
 
