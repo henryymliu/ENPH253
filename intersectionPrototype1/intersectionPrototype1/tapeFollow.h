@@ -10,9 +10,9 @@
 */
 //constants
 #define TD_L 1
-#define TD_R 2
+#define TD_R 4
 
-#define ID_R 3
+#define ID_R 5
 #define ID_L 0
 
 #define KP_KNOB 6
@@ -34,14 +34,12 @@
 namespace tapeFollow{
 
 	//int motorSpeed = 500;
-	extern int error;
+	extern volatile int error; //volatile so ISR may modify it after U-turn
 	void followTape(int motorSpeed);
 	void turnLeft();
 	void turnRight();
 	double getKp();
 	double getKd();
-
-
 
 	
 }

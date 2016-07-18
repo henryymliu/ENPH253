@@ -7,13 +7,10 @@
 namespace eepromParams {
 	uint8_t TF_KP = 6;
 	uint8_t TF_KD = 22;
-	uint16_t* eepromAddress;
+	const uint16_t* KP_SAVE_ADDRESS = (uint16_t*) 0;
+	const uint16_t* KD_SAVE_ADDRESS = (uint16_t*) 2;
 
-	void saveKP(int kp) {
-		eeprom_write_word(eepromAddress, kp);
-	}
-
-	void saveKD(int kd) {
-
+	void saveVal(uint16_t* address, uint8_t val) {
+		eeprom_write_word(address, val);
 	}
 }

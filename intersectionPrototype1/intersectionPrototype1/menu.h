@@ -10,17 +10,24 @@
 #endif
 
 #include <avr\eeprom.h>
+#include "eepromParams.h"
 
-class Menu {
-public:
+namespace Menu {
+
 	enum MainMenuItems {TFParam ,Strategy, Tests, Competition};
 
 	enum TestMenuItems {TapeFollow, NavTest, ArmTest,IRTest};
-	enum TFParamMenuItems {DispK, SaveK, LoadK};
-	
-	MainMenuItems currMenu = TFParam;
 
-	void switchMenu(MainMenuItems menu);
+	enum TFParamMenuItems {kdParams,thresholds};
+	enum tfVars { spParam, dParam, pParam };
+	
+	extern MainMenuItems currMenu;
+
+	void menuLoop();
+	void strategyMenuLoop();
+	void tapeFollowMenuLoop(TFParamMenuItems tfp);
+	void testsMenuLoop();
+
 
 };
 

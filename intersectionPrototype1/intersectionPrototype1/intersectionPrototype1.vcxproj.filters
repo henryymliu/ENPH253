@@ -33,7 +33,10 @@
     <ClInclude Include="path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IR.h">
+    <ClInclude Include="armControl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="multiplex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,7 +56,10 @@
     <ClCompile Include="path.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IR.cpp">
+    <ClCompile Include="armControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="multiplex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

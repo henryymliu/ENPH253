@@ -2,11 +2,12 @@
 #include <phys253.h>          
 #include <LiquidCrystal.h> 
 #include "tapeFollow.h"
+#include "eepromParams.h"
 
 namespace tapeFollow{
 
 //int error = 0;
-	int error;
+	volatile int error;
 	double kp;
 	double kd;
 	double gain;
@@ -125,7 +126,7 @@ namespace tapeFollow{
 	}
 
 
-		//future consideration: make angle a parameter to optimize turning
+		//future consideration: make angle a parameter to optimize turning, maybe power too
 
 		//for turning, turn left/right until tape detectors redetect tape
 		void turnLeft() {

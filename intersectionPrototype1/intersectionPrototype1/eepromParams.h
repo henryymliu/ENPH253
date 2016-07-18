@@ -12,12 +12,12 @@
 
 
 namespace eepromParams {
-	extern uint16_t* eepromAddress;
+	extern const uint16_t* KP_SAVE_ADDRESS;
+	extern const uint16_t* KD_SAVE_ADDRESS;
 	extern uint8_t TF_KP;
 	extern uint8_t TF_KD;
 	
-	void saveKP(int kp);
-	void saveKD(int kd);
+	void saveVal(uint16_t* address, uint8_t val);
 
 }
 #endif

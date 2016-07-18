@@ -5,11 +5,16 @@
 //using namespace std;
 
 #include "path.h"
+
+//appends node neighbor to current node, in order of appearance clockwise from course south axis
 void courseGraph::node::addNeighbor(const node *n) {
 	neighbors[neighborCount++] = n;
 }
 
-	//11, 15 are end points
+
+
+//build graph
+//11, 15 are end points
 courseGraph::courseGraph(){
 	
 	node n1;

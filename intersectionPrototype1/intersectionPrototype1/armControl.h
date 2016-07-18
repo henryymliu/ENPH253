@@ -1,7 +1,7 @@
-// IR.h
+// armControl.h
 
-#ifndef _IR_h
-#define _IR_h
+#ifndef _ARMCONTROL_h
+#define _ARMCONTROL_h
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"

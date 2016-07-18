@@ -8,7 +8,8 @@
 
 //NOTE: ADD HEADERS HERE
 
-#include "IR.h"
+#include "multiplex.h"
+#include "armControl.h"
 #include "eepromParams.h"
 #include "navigation.h"
 #include "menu.h"
@@ -25,8 +26,21 @@ void setup() {
 }
 
 //tapeFollow tf;
+enum state{inMenu, TapeFollow};
+
+state currState = inMenu;
 void loop() {
-	tapeFollow::followTape(70);
-	
+	/*
+	switch (currState) {
+	case inMenu:
+		Menu::menuLoop();
+		break;
+	}
+	*/
+	//tapeFollow::followTape(70);
+
+	LCD.clear(); LCD.home();
+	LCD.print(mux::cycleReadIR());
+	delay(30);
 }
 

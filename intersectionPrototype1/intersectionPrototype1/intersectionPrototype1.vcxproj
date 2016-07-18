@@ -80,18 +80,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="armControl.h" />
     <ClInclude Include="eepromParams.h" />
-    <ClInclude Include="IR.h" />
     <ClInclude Include="menu.h" />
+    <ClInclude Include="multiplex.h" />
     <ClInclude Include="navigation.h" />
     <ClInclude Include="path.h" />
     <ClInclude Include="tapeFollow.h" />
     <ClInclude Include="__vm\.intersectionPrototype1.vsarduino.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="armControl.cpp" />
     <ClCompile Include="eepromParams.cpp" />
-    <ClCompile Include="IR.cpp" />
     <ClCompile Include="menu.cpp" />
+    <ClCompile Include="multiplex.cpp" />
     <ClCompile Include="navigation.cpp" />
     <ClCompile Include="path.cpp" />
     <ClCompile Include="tapeFollow.cpp" />
@@ -101,7 +103,7 @@
   </ImportGroup>
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties debug.local.portname="COM5" arduino.upload.port="COM5" debug.local.portspeed="9600" />
+      <UserProperties debug.local.portname="COM5" VM_ADDITIONAL_COMPILER_CPP_FLAGS="-std=gnu++11" arduino.upload.port="COM5" debug.local.portspeed="9600" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
