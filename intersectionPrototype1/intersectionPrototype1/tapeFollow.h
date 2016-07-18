@@ -38,6 +38,7 @@ namespace tapeFollow{
 	void followTape(int motorSpeed);
 	void turnLeft();
 	void turnRight();
+	void turnAround();
 	double getKp();
 	double getKd();
 

@@ -152,6 +152,20 @@ namespace tapeFollow{
 			currTime = millis();
 		}
 
+		void turnAround() {
+			motor.speed(L_MOTOR, 55);
+			motor.speed(R_MOTOR, -55);
+			delay(INTERSECTION_TURNING_DELAY_MILLI);
+			left = analogRead(TD_L);
+			while (left < thresh) {
+				left = analogRead(TD_L);
+			}
+			error = 0;
+			currTime = millis();
+
+
+		}
+
 		double getKd(){
 			return kd;
 		}
