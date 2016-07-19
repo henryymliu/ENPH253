@@ -36,7 +36,7 @@ namespace tapeFollow{
 		kp = map(knob(KP_KNOB), 0, 1023, 0, 99);
 		kd = map(knob(KD_KNOB), 0, 1023, 0, 99);
 		gain = 20;
-		thresh = 30;
+		thresh = 38;
 
 		left = analogRead(TD_L);
 		right = analogRead(TD_R);
@@ -68,7 +68,7 @@ namespace tapeFollow{
 		
 		if ((millis() - currTime) > INTERSECTION_TURNING_DEADZONE) {
 			intersectLeft = analogRead(ID_L);
-			//intersectRight = analogRead(ID_R);
+			intersectRight = analogRead(ID_R);
 			if (intersectLeft >= thresh) {
 				turnLeft();
 			}

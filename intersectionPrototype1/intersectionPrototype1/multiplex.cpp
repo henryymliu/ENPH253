@@ -5,6 +5,7 @@
 #include "multiplex.h"
 #include  <phys253.h>
 #include "Arduino.h"
+#include "navigation.h"
 
 namespace mux {
 	int reading;
@@ -70,7 +71,19 @@ namespace mux {
 			sensID++;
 		}
 
-		return peakSensorID;
+		if (peakSensorID == 1 || peakSensorID == 2) {
+			return LEFT;
+		}
+		else if (peakSensorID == 3 || peakSensorID == 4) {
+			return STRAIGHT;
+		}
+		else if (peakSensorID == 5 || peakSensorID == 6) {
+			return RIGHT;
+		}
+		else {
+			return NONE;
+		}
+
 	}
 }
 

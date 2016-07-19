@@ -26,6 +26,7 @@ void setup() {
 }
 
 //tapeFollow tf;
+
 enum state{inMenu, TapeFollow};
 
 state currState = inMenu;
@@ -37,10 +38,8 @@ void loop() {
 		break;
 	}
 	*/
-	//tapeFollow::followTape(70);
+	tapeFollow::followTape(80);
 
-	LCD.clear(); LCD.home();
-	LCD.print(mux::cycleReadIR());
-	delay(30);
+	
 }
 
