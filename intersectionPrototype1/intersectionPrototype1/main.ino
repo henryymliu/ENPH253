@@ -41,6 +41,16 @@ void loop() {
 
 	LCD.clear(); LCD.home();
 	LCD.print(mux::cycleReadIR());
+	const courseGraph::node* next_node;
+	const courseGraph::node* curr_node;
+	const courseGraph::node* prev_node1;
+	const courseGraph::node* prev_node2;
+
+	
+	next_node = nav::turn(curr_node, prev_node1, prev_node2);
+	curr_node = next_node;
+	prev_node1 =curr_node;
+	prev_node2 = prev_node1; 
 	delay(30);
 }
 
