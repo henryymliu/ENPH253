@@ -87,7 +87,7 @@ namespace nav {
 
 	}
 
-	const::courseGraph::node* turn(const courseGraph::node *curr_node, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2) {
+	const courseGraph::node* turn(const courseGraph::node *curr_node, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2) {
 		//const courseGraph::node *next_node;
 		
 		dir = mux::cycleReadIR();

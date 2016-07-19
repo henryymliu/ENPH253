@@ -5,6 +5,9 @@
 //using namespace std;
 
 #include "path.h"
+
+
+
 void courseGraph::node::addNeighbor(const node *n) {
 	neighbors[i++] = n;
 	if (n != NULL)
@@ -26,26 +29,7 @@ const courseGraph::node* courseGraph::node::prevDir(int ind) const{ // ind from 
 	//11, 15 are end points
 courseGraph::courseGraph(){
 	
-	node n1;
-	node n2;
-	node n3;
-	node n4;
-	node n5;
-	node n6;
-	node n7;
-	node n8;
-	node n9;
-	node n10;
-	node n11; //endpoint
-	node n12;
-	node n13;
-	node n14;
-	node n15; //endpoint
-	node n16;
-	node n17;
-	node n18;
-	node n19;
-	node n20;
+	
 
 	n1.addNeighbor(&n2);
 	n1.addNeighbor(&n5);
