@@ -7,13 +7,15 @@
 	(relatively) Successful configurations:
 	July 12: p = 10, d = 14, fspeed = 60, tspeed = +/- 55
 	July 12: p = 10, d = 7, fspeed = 70, tspeed = +/- 55 (may be unreliable near the roundabout)
+
+	July 19th: p = 16, d = 23, fspeed = 70, tspeed = +/-55
 */
 //constants
 #define TD_L 1
-#define TD_R 4
+#define TD_R 0
 
-#define ID_R 5
-#define ID_L 0
+#define ID_R 4
+#define ID_L 5
 
 #define KP_KNOB 6
 #define KD_KNOB 7

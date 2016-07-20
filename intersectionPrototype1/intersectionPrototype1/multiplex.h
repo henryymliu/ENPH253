@@ -12,6 +12,7 @@
 //This library is used for handling multiplexing and especially IR signals.
 //Note: Port 1 of digital pins on TINAH (pins 8-15) configured to be digital out
 namespace mux {
+	//enum DIRECTION { LEFT = 0, STRAIGHT = 1, RIGHT = 2, BACK = -1, NONE = -2 };
 	//IR sensor channels, indexed 1-6, left to right, across multiplexers
 	const int MUX1_IR_CHANNELS[] = { 3,0,1 }; //left IR
 	const int MUX2_IR_CHANNELS[] = {3,0,1}; //right IR

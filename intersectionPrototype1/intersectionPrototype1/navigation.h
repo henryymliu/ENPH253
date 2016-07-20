@@ -2,11 +2,6 @@
 
 #ifndef _NAVIGATION_h
 #define _NAVIGATION_h
-#define LEFT 0
-#define STRAIGHT 1
-#define RIGHT 2
-#define BACK -1
-#define NONE -2
 
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
@@ -15,7 +10,13 @@
 #endif
 
 #include "path.h"
-#include "IR.h"
+#include "multiplex.h"
+
+#define LEFT 0
+#define STRAIGHT 1
+#define RIGHT 2
+#define BACK -1
+#define NONE -2
 namespace nav {
 	//Navigates from startN to endN.
 	//Returns 0 if successful, otherwise failed with status
