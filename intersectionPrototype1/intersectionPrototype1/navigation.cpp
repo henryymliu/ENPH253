@@ -8,7 +8,16 @@ namespace nav {
 	int dir;
 	int neighborCount;
 	int prev_index;
+	int temp_index;
 	int speed = 60;
+
+	int find_index(const::courseGraph::node *origin, const::courseGraph::node *target) {
+		for (int i = 0; i < 4; i++) {
+			if (origin->neighbors[i] == target) {
+				return i;
+			}
+		}
+	}
 
 	//courseGraph graph = courseGraph();
 	courseGraph::node *temp;
@@ -79,6 +88,39 @@ namespace nav {
 				}
 				
 			 }
+
+			else {
+
+				if (origin->preferred1 != prev_node1) {
+					temp_index = find_index(origin, origin->preferred1);
+					nextNode = origin->preferred1;
+				}
+
+				else if (origin->preferred1 == prev_node1) {
+					temp_index = find_index(origin, origin->preferred2);
+					nextNode = origin->preferred2;
+				}
+				if (abs(prev_index - temp_index) == 2) {
+					turn_dir(STRAIGHT);
+				}
+				else if(abs(prev_index - temp_index) == 1){
+					if (prev_index>temp_index) {
+						turn_dir(RIGHT);
+					}
+					else {
+						turn_dir(LEFT);
+
+					}
+				}
+
+				else {
+					if (prev_index > temp_index)
+						turn_dir(LEFT);
+					else
+						turn_dir(RIGHT);
+
+				}
+			}
 
 		}
 		return nextNode;
