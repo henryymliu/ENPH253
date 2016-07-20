@@ -13,7 +13,7 @@ public:
 	//NOTE: add distances between nodes in future
 	struct node {
 		//enum dir { N, S, E, W }; //show possible branch directions of each node wrt global coordinates
-								 //vector<int> neighbors;
+		int ID;
 		const node *neighbors[4];
 		void addNeighbor(const node *n);
 		const node* nextDir(int index) const;

@@ -36,7 +36,7 @@ namespace nav {
 			nextNode = origin->neighbors[0];
 		}
 
-		else if (origin->neighborCount+1== 2) {
+		else if (origin->neighborCount== 2) {
 			if (prev_index == 0) {
 				turn_dir(LEFT);
 				nextNode = origin->neighbors[1];
@@ -68,7 +68,7 @@ namespace nav {
 					nextNode = origin->neighbors[(prev_index)];
 				}
 			
-				if (dir == RIGHT && origin->prevDir(prev_index) != NULL) {
+				else if (dir == RIGHT && origin->prevDir(prev_index) != NULL) {
 					turn_dir(dir);
 					nextNode = origin->prevDir(prev_index);// TODO: put safeguard against turning to NULL here 
 				}
@@ -77,6 +77,21 @@ namespace nav {
 					turn_dir(STRAIGHT);
 					nextNode = origin->neighbors[(prev_index+2)%4];
 				}
+
+				else if (dir == STRAIGHT) {
+					if (origin->neighbors[(prev_index + 2) % 4] != NULL) {
+						turn_dir(STRAIGHT);
+						nextNode=origin->neighbors[(prev_index + 2) % 4];
+
+					}
+					else {
+						turn_dir(LEFT);
+						nextNode = origin->nextDir(prev_index);
+					}
+			
+				}
+
+				
 				
 			 }
 

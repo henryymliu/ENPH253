@@ -37,6 +37,7 @@ namespace tapeFollow{
 
 	//int motorSpeed = 500;
 	extern volatile int error; //volatile so ISR may modify it after U-turn
+	extern bool intersectionDetected;
 	void followTape(int motorSpeed);
 	void turnLeft();
 	void turnRight();

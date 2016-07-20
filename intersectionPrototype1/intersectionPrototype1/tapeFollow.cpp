@@ -7,6 +7,7 @@
 namespace tapeFollow{
 
 //int error = 0;
+	bool intersectionDetected = false;
 	volatile int error;
 	double kp;
 	double kd;
@@ -33,8 +34,10 @@ namespace tapeFollow{
 		//same tape following algo as in lab 5
 	void followTape(int motorSpeed) {
 
-		kp = map(knob(KP_KNOB), 0, 1023, 0, 99);
-		kd = map(knob(KD_KNOB), 0, 1023, 0, 99);
+		//kp = map(knob(KP_KNOB), 0, 1023, 0, 99);
+		//kd = map(knob(KD_KNOB), 0, 1023, 0, 99);
+		kp = 13;
+		kd = 21;
 		gain = 20;
 		thresh = 38;
 
@@ -70,11 +73,14 @@ namespace tapeFollow{
 			intersectLeft = analogRead(ID_L);
 			intersectRight = analogRead(ID_R);
 			if (intersectLeft >= thresh) {
-				turnLeft();
+				intersectionDetected = true;
+				//turnLeft();
 			}
 			else if (intersectRight >= thresh) {
+				intersectionDetected = true;
 				//turnRight();
 			}
+			
 		}
 		
 		if (error != lerr) {
@@ -91,6 +97,8 @@ namespace tapeFollow{
 
 		//temp print to screen stuff for debugging; in actual implementation abstract
 		//these values into getter functions, and print only in menu
+
+		/*
 		if (c >= 30) {
 			LCD.clear();LCD.home();
 			LCD.print("R:");
@@ -120,7 +128,7 @@ namespace tapeFollow{
 		}
 
 		c++;
-
+		*/
 		motor.speed(L_MOTOR, motorSpeed + cons);
 		motor.speed(R_MOTOR, motorSpeed - cons);
 	}

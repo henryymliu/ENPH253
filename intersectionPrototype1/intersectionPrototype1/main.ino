@@ -30,6 +30,11 @@ void setup() {
 enum state{inMenu, TapeFollow};
 courseGraph graph = courseGraph();
 state currState = inMenu;
+const courseGraph::node* next_node;
+const courseGraph::node* curr_node = &graph.n4;
+const courseGraph::node* prev_node1 = &graph.n10;
+const courseGraph::node* prev_node2 = &graph.n3;
+
 void loop() {
 	/*
 	switch (currState) {
@@ -39,19 +44,23 @@ void loop() {
 	}
 	*/
 	//tapeFollow::followTape(70);
-
 	LCD.clear(); LCD.home();
-	LCD.print(mux::cycleReadIR());
-	const courseGraph::node* next_node;
-	const courseGraph::node* curr_node = &graph.n1;
-	const courseGraph::node* prev_node1 = &graph.n5;
-	const courseGraph::node* prev_node2 = &graph.n2;
+	LCD.print(next_node->ID);
 
-	
-	next_node = nav::turn(curr_node, prev_node1, prev_node2);
-	curr_node = next_node;
-	prev_node1 =curr_node;
-	prev_node2 = prev_node1; 
-	delay(30);
+	tapeFollow::followTape(60);
+	if (tapeFollow::intersectionDetected) {
+		tapeFollow::followTape(10);
+		delay(200);
+		next_node = nav::turn(curr_node, prev_node1, prev_node2);
+		prev_node1 = curr_node;
+		prev_node2 = prev_node1;
+
+		curr_node = next_node;
+		
+//prev_node2 = prev_node1;
+		//delay(1500);
+		tapeFollow::intersectionDetected = false;
+	}
+	//delay(30);
 }
 

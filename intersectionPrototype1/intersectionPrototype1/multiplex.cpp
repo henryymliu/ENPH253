@@ -9,6 +9,7 @@
 
 namespace mux {
 	int reading;
+	//this is messy, refactor later if performance issues arise
 	double readMUXIn(int muxChip, int channel) {
 		switch (muxChip){
 		case 1:
@@ -84,6 +85,27 @@ namespace mux {
 			return NONE;
 		}
 
+	}
+
+	//TODO: add threshold as parameter in future
+	int detectAdjacentPassenger() {
+		
+		int nearIR_RR = readMUXIn(2, NEAR_IR_RIGHT);
+		int nearIR_RL = readMUXIn(2, NEAR_IR_LEFT);
+
+		//right near IR sensor
+		if ( nearIR_RR > NEAR_IR_THRESH) {
+			return RIGHT;
+		}
+
+		//left near IR sensor
+		else if (nearIR_RL > NEAR_IR_THRESH) {
+			return LEFT;
+		}
+
+		else {
+			return NONE;
+		}
 	}
 }
 
