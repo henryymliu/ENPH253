@@ -21,8 +21,8 @@ namespace nav {
 	//Navigates from startN to endN.
 	//Returns 0 if successful, otherwise failed with status
 	//int navToNode(const courseGraph::node *startN, const courseGraph::node *endN);
-	void turn(const courseGraph::node *curr_node, const courseGraph::node *prev_node1, courseGraph::node *prev_node2);
-	void turn_node(const courseGraph::node *origin, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2, int direction);
+	const courseGraph::node* turn(const courseGraph::node *curr_node, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2);
+	const courseGraph::node* turn_node(const courseGraph::node *origin, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2, int direction);
 	void turn_dir(int turn);
 
 

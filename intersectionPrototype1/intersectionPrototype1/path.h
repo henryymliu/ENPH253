@@ -24,6 +24,26 @@ public:
 		node *preferred2;
 	};
 
+	node n1;
+	node n2;
+	node n3;
+	node n4;
+	node n5;
+	node n6;
+	node n7;
+	node n8;
+	node n9;
+	node n10;
+	node n11; //endpoint
+	node n12;
+	node n13;
+	node n14;
+	node n15; //endpoint
+	node n16;
+	node n17;
+	node n18;
+	node n19;
+	node n20;
 
 	courseGraph();
 

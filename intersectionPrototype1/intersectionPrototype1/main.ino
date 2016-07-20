@@ -22,13 +22,13 @@ void setup() {
 
 	#include <phys253setup.txt>
 	Serial.begin(9600);
+	
 
 }
 
 //tapeFollow tf;
-
 enum state{inMenu, TapeFollow};
-
+courseGraph graph = courseGraph();
 state currState = inMenu;
 void loop() {
 	/*
@@ -38,8 +38,20 @@ void loop() {
 		break;
 	}
 	*/
-	tapeFollow::followTape(80);
+	//tapeFollow::followTape(70);
+
+	LCD.clear(); LCD.home();
+	LCD.print(mux::cycleReadIR());
+	const courseGraph::node* next_node;
+	const courseGraph::node* curr_node = &graph.n1;
+	const courseGraph::node* prev_node1 = &graph.n5;
+	const courseGraph::node* prev_node2 = &graph.n2;
 
 	
+	next_node = nav::turn(curr_node, prev_node1, prev_node2);
+	curr_node = next_node;
+	prev_node1 =curr_node;
+	prev_node2 = prev_node1; 
+	delay(30);
 }
 
