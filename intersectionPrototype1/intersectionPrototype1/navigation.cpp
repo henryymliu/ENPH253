@@ -2,7 +2,7 @@
 //#include "path.h"
 #include "tapeFollow.h"
 #include "multiplex.h"
-
+#include "phys253.h"
 namespace nav {
 
 	int dir;
@@ -11,13 +11,15 @@ namespace nav {
 	int temp_index;
 	int speed = 60;
 
-	int find_index(const::courseGraph::node *origin, const::courseGraph::node *target) {
+	int find_index(const courseGraph::node *origin, const courseGraph::node *target) {
 		for (int i = 0; i < 4; i++) {
 			if (origin->neighbors[i] == target) {
 				return i;
 			}
 		}
 	}
+
+
 
 	//courseGraph graph = courseGraph();
 	courseGraph::node *temp;
@@ -162,6 +164,20 @@ namespace nav {
 		 
 	}
 	
-
+	void checkAdjacentPassengers(){
+		int dir = mux::detectAdjacentPassenger();
+		if (dir != NONE) {
+			switch (dir){
+			case RIGHT:
+				motor.stop_all();
+				delay(500);
+				break;
+			case LEFT:
+				motor.stop_all();
+				delay(500);
+				break;
+			}
+		}
+	}
 
 }

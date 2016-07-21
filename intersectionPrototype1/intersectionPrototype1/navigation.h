@@ -25,8 +25,9 @@ namespace nav {
 	const courseGraph::node* turn(const courseGraph::node *curr_node, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2);
 	const courseGraph::node* turn_node(const courseGraph::node *origin, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2, int direction);
 	void turn_dir(int turn);
-	int find_index(const::courseGraph::node *origin,const::courseGraph::node *target);
+	int find_index(const courseGraph::node *origin,const courseGraph::node *target);
 
+	void checkAdjacentPassengers();
 }
 
 #endif

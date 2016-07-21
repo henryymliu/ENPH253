@@ -88,6 +88,7 @@ namespace mux {
 	}
 
 	//TODO: add threshold as parameter in future
+	//also consider averaging because of noise
 	int detectAdjacentPassenger() {
 		
 		int nearIR_RR = readMUXIn(2, NEAR_IR_RIGHT);

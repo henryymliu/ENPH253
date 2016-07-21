@@ -37,10 +37,6 @@ const courseGraph::node* prev_node2 = &graph.n3;
 
 void loop() {
 
-	RCServo0.write(20);
-	delay(10000);
-	RCServo1.write(0);
-	delay(10000);
 
 	/*
 	switch (currState) {
@@ -53,8 +49,9 @@ void loop() {
 	
 	//LCD.clear(); LCD.home();
 	//LCD.print(next_node->ID);
-	/*
+	
 	tapeFollow::followTape(80);
+	nav::checkAdjacentPassengers();
 	if (tapeFollow::intersectionDetected) {
 		//delay(100);
 		tapeFollow::followTape(10);
@@ -70,6 +67,6 @@ void loop() {
 		tapeFollow::intersectionDetected = false;
 	}
 	//delay(30);
-	*/
+	
 }
 
