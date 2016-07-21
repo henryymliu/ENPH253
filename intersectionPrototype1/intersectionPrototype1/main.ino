@@ -43,14 +43,16 @@ void loop() {
 		break;
 	}
 	*/
-	//tapeFollow::followTape(70);
-	LCD.clear(); LCD.home();
-	LCD.print(next_node->ID);
+	//tapeFollow::followTape(90);
+	
+	//LCD.clear(); LCD.home();
+	//LCD.print(next_node->ID);
 
-	tapeFollow::followTape(60);
+	tapeFollow::followTape(80);
 	if (tapeFollow::intersectionDetected) {
+		//delay(100);
 		tapeFollow::followTape(10);
-		delay(200);
+	
 		next_node = nav::turn(curr_node, prev_node1, prev_node2);
 		prev_node1 = curr_node;
 		prev_node2 = prev_node1;
@@ -62,5 +64,6 @@ void loop() {
 		tapeFollow::intersectionDetected = false;
 	}
 	//delay(30);
+	
 }
 

@@ -9,6 +9,7 @@
 	July 12: p = 10, d = 7, fspeed = 70, tspeed = +/- 55 (may be unreliable near the roundabout)
 
 	July 19th: p = 16, d = 23, fspeed = 70, tspeed = +/-55
+	July 20th: p = 18, d = 23, fspeed = 70, tspeed = +/-55
 */
 //constants
 #define TD_L 1
@@ -36,7 +37,7 @@
 namespace tapeFollow{
 
 	//int motorSpeed = 500;
-	extern volatile int error; //volatile so ISR may modify it after U-turn
+	extern int error; //volatile so ISR may modify it after U-turn
 	extern bool intersectionDetected;
 	void followTape(int motorSpeed);
 	void turnLeft();

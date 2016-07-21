@@ -22,10 +22,15 @@ namespace nav {
 	//courseGraph graph = courseGraph();
 	courseGraph::node *temp;
 	void turn_dir(int dir) {
-		if (dir == LEFT)
+
+		if (dir == LEFT) {
+			delay(150);
 			tapeFollow::turnLeft();
-		if (dir == RIGHT)
+		}
+		if (dir == RIGHT) {
+			delay(150);
 			tapeFollow::turnRight();
+		}
 		if (dir == STRAIGHT)
 			tapeFollow::followTape(speed); //TODO: which speed?
 		if (dir == BACK)
