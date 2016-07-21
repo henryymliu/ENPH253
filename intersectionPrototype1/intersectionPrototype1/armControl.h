@@ -9,6 +9,11 @@
 	#include "WProgram.h"
 #endif
 
+namespace arm {
+	void turn_arm(int angle);
+	int grab();
+}
+
 
 #endif
 
