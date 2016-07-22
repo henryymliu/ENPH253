@@ -2,6 +2,7 @@
 //#include "path.h"
 #include "tapeFollow.h"
 #include "multiplex.h"
+#include "phys253.h"
 
 #define ARR_SIZE 10
 namespace nav {
@@ -19,6 +20,8 @@ namespace nav {
 			}
 		}
 	}
+
+
 
 	//courseGraph graph = courseGraph();
 	courseGraph::node *temp;
@@ -232,5 +235,21 @@ namespace nav {
 	}
 	
 
+	
+	void checkAdjacentPassengers(){
+		int dir = mux::detectAdjacentPassenger();
+		if (dir != NONE) {
+			switch (dir){
+			case RIGHT:
+				motor.stop_all();
+				delay(500);
+				break;
+			case LEFT:
+				motor.stop_all();
+				delay(500);
+				break;
+			}
+		}
+	}
 
 }

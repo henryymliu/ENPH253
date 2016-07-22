@@ -32,6 +32,7 @@ namespace nav {
 
 	//const courseGraph::node* shortest_path(const courseGraph::node *curr_node);
 
+	void checkAdjacentPassengers();
 }
 
 #endif
