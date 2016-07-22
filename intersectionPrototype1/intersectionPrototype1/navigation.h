@@ -26,6 +26,11 @@ namespace nav {
 	const courseGraph::node* turn_node(const courseGraph::node *origin, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2, int direction);
 	void turn_dir(int turn);
 	int find_index(const courseGraph::node *origin,const courseGraph::node *target);
+	void move_to(const courseGraph::node *origin, const courseGraph::node *next);
+	const courseGraph::node* move_min(const courseGraph::node *prev_node, const courseGraph::node *curr_node);
+	void dropoff(const courseGraph::node *prev_node, const courseGraph::node *curr_node);
+
+	//const courseGraph::node* shortest_path(const courseGraph::node *curr_node);
 
 	void checkAdjacentPassengers();
 }
