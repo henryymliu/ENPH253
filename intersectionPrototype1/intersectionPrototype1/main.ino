@@ -13,6 +13,7 @@
 #include "eepromParams.h"
 #include "navigation.h"
 #include "menu.h"
+#include "armControl.h"
 #include <phys253.h>          
 #include <LiquidCrystal.h> 
 #include "tapeFollow.h"
@@ -71,5 +72,6 @@ void loop() {
 	}
 	//delay(30);
 	*/
+	
 }
 
