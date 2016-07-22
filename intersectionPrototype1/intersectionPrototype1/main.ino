@@ -45,28 +45,25 @@ void loop() {
 		break;
 	}
 	*/
-	//tapeFollow::followTape(90);
+	//tapeFollow::followTape(80);
 	
-	//LCD.clear(); LCD.home();
-	//LCD.print(next_node->ID);
+	
+	LCD.clear(); LCD.home();
+	LCD.print(next_node->ID);
 	
 	tapeFollow::followTape(80);
-	nav::checkAdjacentPassengers();
+	
+	//nav::checkAdjacentPassengers();
 	if (tapeFollow::intersectionDetected) {
 		//delay(100);
 		tapeFollow::followTape(10);
-	
+
 		next_node = nav::turn(curr_node, prev_node1, prev_node2);
 		prev_node1 = curr_node;
 		prev_node2 = prev_node1;
 
 		curr_node = next_node;
-		
-//prev_node2 = prev_node1;
-		//delay(1500);
-		tapeFollow::intersectionDetected = false;
 	}
-	//delay(30);
 	
 }
 

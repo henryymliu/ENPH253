@@ -15,21 +15,21 @@ namespace mux {
 	//enum DIRECTION { LEFT = 0, STRAIGHT = 1, RIGHT = 2, BACK = -1, NONE = -2 };
 
 	//IR sensor channels, indexed 1-6, left to right, across multiplexers
-	const int MUX1_IR_CHANNELS[] = { 3,0,1 }; //left IR
-	const int MUX2_IR_CHANNELS[] = {3,0,1}; //right IR
+	const int MUX1_IR_CHANNELS[] = {2,1,0,3,6,4}; //left IR
+	//const int MUX2_IR_CHANNELS[] = {3,0,1}; //right IR
 
 
 	//near IR params, ALL TEMPORARY FOR NOW
-	const int NEAR_IR_LEFT = 3;
-	const int NEAR_IR_RIGHT = 1;
+	const int NEAR_IR_LEFT = 1;
+	const int NEAR_IR_RIGHT = 0;
 	const int NEAR_IR_THRESH = 400;
 
 	//IR digital outs
-	const int MUXOUT_1_PINS[] = { 10,11,12 };
-	const int MUXOUT_2_PINS[] = { 13,14,15 };
+	const int MUXOUT_1_PINS[] = { 10,9,11 };
+	const int MUXOUT_2_PINS[] = { 15,14,13};
 
-	const int IR_RESET_1 = 9;
-	const int IR_RESET_2 = 8;
+	const int IR_RESET_1 = 8;
+	const int IR_RESET_2 = 12;
 
 	//IR analog in
 	const int MUXIN1 = 3;

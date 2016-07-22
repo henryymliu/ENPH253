@@ -63,6 +63,7 @@ namespace mux {
 		}
 
 		//read MUX2
+		/*
 		for (const auto &sens : MUX2_IR_CHANNELS) {
 			read = readMUXIn(2, sens);
 			if (read > maxReading) {
@@ -71,7 +72,7 @@ namespace mux {
 			}
 			sensID++;
 		}
-
+		*/
 		if (peakSensorID == 1 || peakSensorID == 2) {
 			return LEFT;
 		}
