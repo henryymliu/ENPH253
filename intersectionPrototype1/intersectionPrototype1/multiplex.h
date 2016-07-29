@@ -15,7 +15,7 @@ namespace mux {
 	//enum DIRECTION { LEFT = 0, STRAIGHT = 1, RIGHT = 2, BACK = -1, NONE = -2 };
 
 	//IR sensor channels, indexed 1-6, left to right, across multiplexers
-	const int MUX1_IR_CHANNELS[] = {2,1,0,3,6,4}; //left IR
+	const int MUX1_IR_CHANNELS[] = {6,4,3,0,1,2}; //left IR
 	//const int MUX2_IR_CHANNELS[] = {3,0,1}; //right IR
 
 
@@ -25,7 +25,7 @@ namespace mux {
 	const int NEAR_IR_THRESH = 400;
 
 	//IR digital outs
-	const int MUXOUT_1_PINS[] = { 10,9,11 };
+	const int MUXOUT_1_PINS[] = { 11,9,10};
 	const int MUXOUT_2_PINS[] = { 15,14,13};
 
 	const int IR_RESET_1 = 8;

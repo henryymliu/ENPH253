@@ -11,7 +11,8 @@
 
 namespace arm {
 	void turn_arm(int angle);
-	void extend_arm();
+	void extend_grab();
+	void retract();
 	void grab();
 	void release();
 	

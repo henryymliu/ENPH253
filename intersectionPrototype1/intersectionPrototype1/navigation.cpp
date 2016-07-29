@@ -3,6 +3,7 @@
 #include "tapeFollow.h"
 #include "multiplex.h"
 #include "phys253.h"
+#include "armControl.h"
 
 #define ARR_SIZE 10
 namespace nav {
@@ -213,6 +214,7 @@ namespace nav {
 
 	}
 
+
 	void dropoff(const courseGraph::node *prev_node, const courseGraph::node *curr_node) {
 		const courseGraph::node *temp_node;
 		while (temp_node->ID != 1 || temp_node->ID != 2 || temp_node->ID != 3 || temp_node->ID != 4) {
@@ -237,16 +239,18 @@ namespace nav {
 
 	
 	void checkAdjacentPassengers(){
-		int dir = mux::detectAdjacentPassenger();
+		int dir = mux::detectAdjacentPassenger(); //TODO:Refine the close-range IR input v/s long-range
 		if (dir != NONE) {
 			switch (dir){
-			case RIGHT:
+			case RIGHT: //pickup from right
 				motor.stop_all();
 				delay(500);
+				arm::pickup(RIGHT);
 				break;
-			case LEFT:
+			case LEFT: //pickup from left
 				motor.stop_all();
 				delay(500);
+				arm::pickup(LEFT);
 				break;
 			}
 		}

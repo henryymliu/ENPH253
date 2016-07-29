@@ -50,19 +50,5 @@ extern "C" void __cxa_pure_virtual() {;}
 #define F(string_literal) ((const PROGMEM char *)(string_literal))
 #undef PSTR
 #define PSTR(string_literal) ((const PROGMEM char *)(string_literal))")
-#include <main.ino>
-#include <armControl.cpp>
-#include <armControl.h>
-#include <eepromParams.cpp>
-#include <eepromParams.h>
-#include <menu.cpp>
-#include <menu.h>
-#include <multiplex.cpp>
-#include <multiplex.h>
-#include <navigation.cpp>
-#include <navigation.h>
-#include <path.cpp>
-#include <path.h>
-#include <tapeFollow.cpp>
-#include <tapeFollow.h>
+#include "main.ino"
 #endif

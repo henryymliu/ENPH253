@@ -57,8 +57,8 @@ namespace tapeFollow{
 
 		//welp, we're way off
 		if ((left < thresh) && (right < thresh)) {
-			if (lerr > 0) error = 5; //left
-			if (lerr < 0) error = -5; //right
+			if (lerr > 0) error = 3; //left
+			if (lerr < 0) error = -3; //right
 		}
 
 		//interrupt function if intersection detected, maybe trigger ISR in the future
@@ -86,11 +86,12 @@ namespace tapeFollow{
 		if (error != lerr) {
 			recerr = lerr;
 			q = m;
+			//d = kd*(((double)error - (double)recerr) / ((double)m));
 			m = 1;
 		}
 
 		p = kp*error;
-		d = kd*((double)error - (double)recerr) / ((double)q + (double)m);
+		d = kd*(((double)error - (double)recerr) / ((double)q + (double)m));
 		cons = p + d;
 		//Serial.print("cons: "); Serial.print(cons);
 		//Serial.print("err: "); Serial.print(error + "\n");
@@ -128,7 +129,7 @@ namespace tapeFollow{
 		}
 
 		c++;
-		
+		//m++;
 		lerr = error;
 		motor.speed(L_MOTOR, motorSpeed + cons);
 		motor.speed(R_MOTOR, motorSpeed - cons);
