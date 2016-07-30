@@ -20,6 +20,9 @@
 
 int time;
 namespace arm {
+
+	motorEncoder turntable = motorEncoder(tt_ePR, tt_ePL);
+	motorEncoder armActuator = motorEncoder(aa_ePR, aa_ePL);
 	
 	void grab() {
 		RCServo0.write(0);   //claw attached to RCServo 0
@@ -33,9 +36,11 @@ namespace arm {
 		RCServo0.write(150);
 	}
 
+	//IMPLEMENT
 	void turn_arm(int angle) {
 		
-
+		
+		//armActuator.
 			
 	}
 
@@ -69,11 +74,77 @@ namespace arm {
 		retract();
 		vert_move(UP_ANGLE);
 
-
-
-
-
 	}
 
+	double motorEncoder::readEncoderAngle(int encoderPinR, int encoderPinL) {
+		rightState = digitalRead(encoderPinR);
+		leftState = digitalRead(encoderPinL);
+
+		//changing states
+		if (state == 0) {
+			if (leftState == 1 && rightState == 0)
+				state++;
+			if (leftState == 0 && rightState == 1)
+				state--;
+		}
+
+		else if (state == 1) {
+			if (leftState == 1 && rightState == 1)
+				state++;
+			if (leftState == 0 && rightState == 0)
+				state--;
+		}
+
+		else if (state == 2) {
+			if (leftState == 0 && rightState == 1)
+				state++;
+			if (leftState == 1 && rightState == 0)
+				state--;
+		}
+
+		else if (state == 3) {
+			if (leftState == 0 && rightState == 0)
+				state++;
+			if (leftState == 1 && rightState == 1)
+				state--;
+		}
+
+		else if (state == -1) {
+			if (leftState == 0 && rightState == 0)
+				state++;
+			if (leftState == 1 && rightState == 1)
+				state--;
+		}
+
+		else if (state == -2) {
+			if (leftState == 0 && rightState == 1)
+				state++;
+			if (leftState == 1 && rightState == 0)
+				state--;
+		}
+
+		else if (state == -3) {
+			if (leftState == 1 && rightState == 1)
+				state++;
+			if (leftState == 0 && rightState == 0)
+				state--;
+		}
+
+		if (state == 4) {
+			rotaryPosition++;
+			state = 0;
+		}
+
+		if (state == -4) {
+			rotaryPosition--;
+			state = 0;
+		}
+
+		return rotaryPosition;
+	}
+
+	double turntableAngle(motorEncoder tt) {
+		return tt.rotaryPosition * 90.0 / 11.0;
+	}
 
 }

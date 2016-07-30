@@ -34,29 +34,29 @@ namespace tapeFollow{
 		//same tape following algo as in lab 5
 	void followTape(int motorSpeed) {
 
-		kp = map(knob(KP_KNOB), 0, 1023, 0, 99);
-		kd = map(knob(KD_KNOB), 0, 1023, 0, 99);
-		//kp = 17;
-		//kd = 23;
+		//kp = map(knob(KP_KNOB), 0, 1023, 0, 99);
+		//kd = map(knob(KD_KNOB), 0, 1023, 0, 99);
+		kp = 9;
+		kd = 12;
 		gain = 20;
-		thresh = 38;
-
+		thresh = 150;
+		int tlthresh = 40;
 		left = analogRead(TD_L);
 		right = analogRead(TD_R);
 
 		//on tape
-		if ((left >= thresh) && (right >= thresh))
+		if ((left >= tlthresh) && (right >= thresh))
 			error = 0;
 		//slightly to the right
-		if ((left >= thresh) && (right < thresh))
+		if ((left >= tlthresh) && (right < thresh))
 			error = -1;
 
 		//slightly to the left
-		if ((left < thresh) && (right >= thresh))
+		if ((left < tlthresh) && (right >= thresh))
 			error = 1;
 
 		//welp, we're way off
-		if ((left < thresh) && (right < thresh)) {
+		if ((left < tlthresh) && (right < thresh)) {
 			if (lerr > 0) error = 3; //left
 			if (lerr < 0) error = -3; //right
 		}
@@ -72,13 +72,22 @@ namespace tapeFollow{
 		if ((millis() - currTime) > INTERSECTION_TURNING_DEADZONE) {
 			intersectLeft = analogRead(ID_L);
 			intersectRight = analogRead(ID_R);
+
 			if (intersectLeft >= thresh) {
-				intersectionDetected = true;
-				//turnLeft();
+				delay(10);
+				intersectLeft = analogRead(ID_L);
+				if (intersectLeft >= thresh) {
+					intersectionDetected = true;
+					turnLeft();
+				}
 			}
 			else if (intersectRight >= thresh) {
-				intersectionDetected = true;
-				//turnRight();
+				delay(10);
+				intersectRight = analogRead(ID_R);
+				if (intersectRight >= thresh) {
+					intersectionDetected = true;
+					turnRight();
+				}
 			}
 			
 		}
@@ -99,7 +108,7 @@ namespace tapeFollow{
 		//temp print to screen stuff for debugging; in actual implementation abstract
 		//these values into getter functions, and print only in menu
 
-		
+		/*
 		if (c >= 30) {
 			LCD.clear();LCD.home();
 			LCD.print("R:");
@@ -118,17 +127,20 @@ namespace tapeFollow{
 			LCD.print(intersectLeft);
 
 			LCD.setCursor(5, 1);
+
+			
 			LCD.print("p:");
 			LCD.print((int)kp);
 
 			LCD.setCursor(10, 1);
 			LCD.print("d:");
 			LCD.print((int)kd);
-
+			
 			c = 0;
 		}
 
 		c++;
+		*/
 		//m++;
 		lerr = error;
 		motor.speed(L_MOTOR, motorSpeed + cons);

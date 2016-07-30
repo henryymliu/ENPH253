@@ -8,16 +8,16 @@
 	July 20th: p = 8, d = 9, fspeed = 80, tspeed = +/-55
 */
 //constants
-#define TD_L 1
-#define TD_R 0
+#define TD_L 4
+#define TD_R 3
 
-#define ID_R 4
+#define ID_R 2
 #define ID_L 5
 
 #define KP_KNOB 6
 #define KD_KNOB 7
 
-#define L_MOTOR 1
+#define L_MOTOR 3
 #define R_MOTOR 0
 
 #define INTERSECTION_TURNING_DELAY_MILLI 400
@@ -41,6 +41,7 @@ namespace tapeFollow{
 	void turnAround();
 	double getKp();
 	double getKd();
+	extern int c;
 
 	
 }

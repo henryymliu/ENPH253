@@ -49,12 +49,16 @@ void loop() {
 	//tapeFollow::followTape(80);
 	
 	
-	//LCD.clear(); LCD.home();
-	//LCD.print(next_node->ID);
+	
 	
 	tapeFollow::followTape(70);
-	
+	LCD.clear(); LCD.home();
+	//if (tapeFollow::c >= 30) {
+		LCD.print("NN:");
+		LCD.print(next_node->ID);
+	//}
 	//nav::checkAdjacentPassengers();
+	
 	
 	if (tapeFollow::intersectionDetected) {
 		//delay(100);
@@ -66,6 +70,7 @@ void loop() {
 
 		curr_node = next_node;
 	}
+	
 	tapeFollow::intersectionDetected = false;
 	
 

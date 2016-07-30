@@ -14,15 +14,16 @@
 namespace mux {
 	//enum DIRECTION { LEFT = 0, STRAIGHT = 1, RIGHT = 2, BACK = -1, NONE = -2 };
 
+	//MUX 1 is far range, MUX 2 is close range
 	//IR sensor channels, indexed 1-6, left to right, across multiplexers
 	const int MUX1_IR_CHANNELS[] = {6,4,3,0,1,2}; //left IR
 	//const int MUX2_IR_CHANNELS[] = {3,0,1}; //right IR
 
 
 	//near IR params, ALL TEMPORARY FOR NOW
-	const int NEAR_IR_LEFT = 1;
-	const int NEAR_IR_RIGHT = 0;
-	const int NEAR_IR_THRESH = 400;
+	const int NEAR_IR_LEFT = 3;
+	const int NEAR_IR_RIGHT = 2;
+	const int NEAR_IR_THRESH = 600;
 
 	//IR digital outs
 	const int MUXOUT_1_PINS[] = { 11,9,10};
@@ -32,8 +33,8 @@ namespace mux {
 	const int IR_RESET_2 = 12;
 
 	//IR analog in
-	const int MUXIN1 = 3;
-	const int MUXIN2 = 2;
+	const int MUXIN1 = 1;
+	const int MUXIN2 = 0;
 
 	//reads one channel of multiplexer, returns analogRead value
 	double readMUXIn(int muxChip, int channel);

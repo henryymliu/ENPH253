@@ -49,7 +49,7 @@ namespace mux {
 
 	int cycleReadIR() {
 		int peakSensorID = NULL;
-		int maxReading = 30;
+		int maxReading = 200;
 		int sensID = 1;
 		int read;
 		//read MUX 1
