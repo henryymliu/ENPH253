@@ -76,7 +76,7 @@ namespace arm {
 
 	}
 
-	double motorEncoder::readEncoderAngle(int encoderPinR, int encoderPinL) {
+	double motorEncoder::readEncoderAngle() {
 		rightState = digitalRead(encoderPinR);
 		leftState = digitalRead(encoderPinL);
 
@@ -130,12 +130,12 @@ namespace arm {
 				state--;
 		}
 
-		if (state == 4) {
+		else if (state == 4) {
 			rotaryPosition++;
 			state = 0;
 		}
 
-		if (state == -4) {
+		else if (state == -4) {
 			rotaryPosition--;
 			state = 0;
 		}

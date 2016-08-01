@@ -36,7 +36,7 @@ namespace arm {
 		//Inputs:
 		// encoderPinR, encoderPinL are digital pins of right and left encoder pin respectively
 		//	
-		double readEncoderAngle(int encoderPinR, int encoderPinL);
+		double readEncoderAngle();
 	};
 
 	const int tt_ePR = 1;
