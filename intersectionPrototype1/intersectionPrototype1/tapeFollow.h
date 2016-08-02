@@ -39,14 +39,10 @@ namespace tapeFollow{
 	void turnLeft();
 	void turnRight();
 	void turnAround();
-	double getKp();
-	double getKd();
 	extern int c;
 
 	
 }
 	
-
-
 
 #endif

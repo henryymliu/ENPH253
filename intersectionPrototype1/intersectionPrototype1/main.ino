@@ -28,29 +28,18 @@ void setup() {
 }
 
 //tapeFollow tf;
-enum state{inMenu, TapeFollow};
+
 courseGraph graph = courseGraph();
-state currState = inMenu;
 const courseGraph::node* next_node;
 const courseGraph::node* curr_node = &graph.n4;
 const courseGraph::node* prev_node1 = &graph.n10;
 const courseGraph::node* prev_node2 = &graph.n3;
 
 void loop() {
-
-
+	menu::menuLoop();
 	/*
-	switch (currState) {
-	case inMenu:
-		Menu::menuLoop();
-		break;
-	}
-	*/
 	//tapeFollow::followTape(80);
-	
-	
-	
-	
+
 	tapeFollow::followTape(70);
 	LCD.clear(); LCD.home();
 	//if (tapeFollow::c >= 30) {
@@ -72,7 +61,7 @@ void loop() {
 	}
 	
 	tapeFollow::intersectionDetected = false;
-	
+	*/
 
 }
 

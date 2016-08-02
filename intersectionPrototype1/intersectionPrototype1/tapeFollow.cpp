@@ -36,10 +36,9 @@ namespace tapeFollow{
 
 		//kp = map(knob(KP_KNOB), 0, 1023, 0, 99);
 		//kd = map(knob(KD_KNOB), 0, 1023, 0, 99);
-		kp = 9;
-		kd = 12;
-		gain = 20;
-		thresh = 150;
+		kp = eepromParams::TF_KP;
+		kd = eepromParams::TF_KD;
+		thresh = eepromParams::TF_thresh;
 		int tlthresh = 40;
 		left = analogRead(TD_L);
 		right = analogRead(TD_R);
@@ -188,11 +187,4 @@ namespace tapeFollow{
 
 		}
 
-		double getKd(){
-			return kd;
-		}
-
-		double getKp() {
-			return kp;
-		}
 	}
