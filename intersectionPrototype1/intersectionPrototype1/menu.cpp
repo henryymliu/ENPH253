@@ -5,6 +5,9 @@
 #include "menu.h"
 #include "eepromParams.h"
 #include "tapeFollow.h"
+#include "armControl.h"
+#include "path.h"
+#include "navigation.h"
 #include <phys253.h>
 #define DISP_REFRESH_RATE 60
 
@@ -129,18 +132,138 @@ namespace menu{
 				LCD.setCursor(0, 1);
 				LCD.print("begin TF");
 				if (lastButtonState == longStartButton){
-					while (!stopbutton){
-						tapeFollow::followTape(70); //change to vary speed later
+					LCD.clear(); LCD.home();
+					LCD.print("Press STOP to");
+					LCD.setCursor(0, 1);
+					LCD.print("stop TF");
+					while (!stopbutton()){
+						tapeFollow::followTape(80); //change to vary speed later
 					}
+					motor.stop_all();
+					lastButtonState = none;
 				}
 				break;
-			case navigationTest:
-				break;
+			case navigationTest: {
+				const courseGraph::node* next_node;
+				LCD.clear();LCD.home();
+				LCD.print("cN:");
+				const courseGraph::node* currN = nav::graph.nodeArray[(int)map(knob(6), 0, 1023, 0, 19)];
+				LCD.print(currN->ID);
 
+				LCD.setCursor(6, 0);
+				LCD.print("pN1:");
+				const courseGraph::node* prevN1 = currN->neighbors[(int)map(knob(7), 0, 1023, 0, 3)];
+				LCD.print(prevN1->ID);
+				const courseGraph::node* prevN2 = prevN1->neighbors[0];
+
+				switch (lastButtonState) {
+				case longStartButton: {
+					while (!stopbutton()) {
+						LCD.clear();LCD.home();
+						LCD.print("IR ");
+						switch (nav::dir) {
+						case 0:
+							LCD.print("L");
+							break;
+						case 1:
+							LCD.print("F");
+							break;
+						case -1:
+							LCD.print("B");
+							break;
+						case 2:
+							LCD.print("R");
+							break;
+						case -2:
+							LCD.print("N");
+							break;
+						}
+
+						int passengerDir = nav::checkAdjacentPassengers();
+						LCD.setCursor(7, 0);
+						switch (passengerDir) {
+						case LEFT:
+							LCD.print("PL");
+							nav::dropoff;
+							break;
+						case RIGHT:
+							LCD.print("PR");
+							nav::dropoff;
+							break;
+							
+						}
+
+						LCD.setCursor(11, 0);
+						LCD.print("NN:"); LCD.print(next_node->ID);
+						LCD.setCursor(0, 1);
+						//turn functions printed here
+
+						tapeFollow::followTape(80);
+						if (tapeFollow::intersectionDetected) {
+							tapeFollow::followTape(10);
+
+							next_node = nav::turn(currN, prevN1, prevN2);
+							prevN1 = currN;
+							prevN2 = prevN1;
+							currN = next_node;
+							tapeFollow::intersectionDetected = false;
+						}
+
+						
+
+						if (tapeFollow::collision) {
+							tapeFollow::turnAround;
+							currN = prevN1;
+							prevN1 = next_node;
+							tapeFollow::collision = false;
+							 
+						}
+						//tapeFollow::intersectionDetected = false;
+						//tapeFollow::collision = false;
+					}
+					motor.stop_all();
+					lastButtonState = none;
+					break;
+				}
+
+				}
+				break;
+			}
 			case IRTest:
+				LCD.clear();LCD.home();
+				LCD.print(mux::readMUXIn(2,mux::NEAR_IR_LEFT));
+				LCD.setCursor(6, 0);
+				LCD.print(mux::readMUXIn(2,mux::NEAR_IR_RIGHT));
+
+				mux::NEAR_IR_THRESH = knob(6);
+				LCD.setCursor(0, 1);
+				LCD.print("T:");
+				LCD.print(mux::NEAR_IR_THRESH);
 				break;
 
 			case armCalibTest:
+				LCD.clear();LCD.home();
+				LCD.print("TT:");
+				LCD.print(arm::turntable.rotaryPosition);
+				arm::turntable.readEncoderAngle();
+				LCD.setCursor(8, 0);
+				LCD.print("AP:");
+				arm::armActuator.readEncoderAngle();
+				LCD.print(arm::armActuator.rotaryPosition);
+				LCD.setCursor(0, 1);
+				int tiltPos = map(knob(6), 0, 1023, 0, 180);
+				LCD.print("TA:"); LCD.print(tiltPos);
+				RCServo2.write(tiltPos);
+
+				LCD.setCursor(6, 1);
+				int turnPos = map(knob(7), 0, 1023, -15, 15);
+				LCD.print("TuA:"); LCD.print(turnPos);
+				
+				//arm::turn_arm(turnPos);
+				
+				switch (lastButtonState) {
+					
+				}
 				break;
 				
 			}
@@ -149,6 +272,7 @@ namespace menu{
 		dispTime++;
 	}
 
+	//Determines menu order upon SHORTSTOPBUTTON
 	void switchMenu(){
 		switch (currMenu){
 		case Competition:
@@ -163,16 +287,19 @@ namespace menu{
 			break;
 
 		case tapeFollowTest:
-			currMenu = PIDParams;
+			currMenu = navigationTest;
 			break;
 
 		case navigationTest:
+			currMenu = IRTest;
 			break;
 
 		case IRTest:
+			currMenu = armCalibTest;
 			break;
 
 		case armCalibTest:
+			currMenu = PIDParams;
 			break;
 
 		}
@@ -182,16 +309,7 @@ namespace menu{
 		buttonPressStates bps = none;
 		unsigned long buttonTime = millis();
 		if (startbutton()){
-			/*
-			delay(200); //brief press
-			if (startbutton()){
-				bps = shortStartButton;
-			}
-			delay(1000); //long press
-			if (startbutton()){
-				bps = longStartButton;
-			}
-			*/
+
 			while (startbutton()){
 
 			}

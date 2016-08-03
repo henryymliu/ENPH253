@@ -11,12 +11,13 @@
 
 namespace arm {
 	//pickup functions
-	void turn_arm(int angle);
+	void turn_arm(int pos);
+	void turn_actuator(int pos);
 	void extend_grab();
 	void retract();
 	void grab();
 	void release();
-	
+	void stow();
 	void pickup(int dir);
 
 	//rotary encoder stuffs
@@ -39,13 +40,15 @@ namespace arm {
 		double readEncoderAngle();
 	};
 
-	const int tt_ePR = 1;
-	const int tt_ePL = 2;
-	const int aa_ePR = 3;
-	const int aa_ePL = 4;
+	const int tt_ePR = 2;
+	const int tt_ePL = 3;
+	const int aa_ePR = 6;
+	const int aa_ePL = 7;
 	extern motorEncoder turntable; 
 	extern motorEncoder armActuator;
 
+	const int TILTSERVO_PICKUP_ANGLE = 165;
+	const int TILTSERVO_STOW_ANGLE = 100;
 	double turntableAngle(motorEncoder tt);
 }
 

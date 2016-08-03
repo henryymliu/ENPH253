@@ -9,6 +9,7 @@
 
 namespace mux {
 	int reading;
+	int NEAR_IR_THRESH = 650;
 	//this is messy, refactor later if performance issues arise
 	double readMUXIn(int muxChip, int channel) {
 		switch (muxChip){
@@ -49,7 +50,7 @@ namespace mux {
 
 	int cycleReadIR() {
 		int peakSensorID = NULL;
-		int maxReading = 200;
+		int maxReading = 300;
 		int sensID = 1;
 		int read;
 		//read MUX 1
@@ -85,6 +86,41 @@ namespace mux {
 		else {
 			return NONE;
 		}
+		/*int peakSensorID = NONE;
+		int maxReading = 200;
+		const int AVG_MULTIPLIER_THRESH = 1.5;
+		int sensID = 1;
+		int avread = 0;
+		int read[6];
+		//read MUX 1
+		for (int i = 0; i < 6; i++) {
+			read[i] = readMUXIn(1, MUX1_IR_CHANNELS[i]);
+			avread += read[i];
+			if (read[i] > maxReading) {
+				peakSensorID = sensID;
+				maxReading = read[i];
+			}
+			
+			sensID++;
+		}
+		avread  = (avread - maxReading)/5;
+		if (maxReading < (AVG_MULTIPLIER_THRESH * avread)) {
+			peakSensorID = NONE;
+		}
+
+		if (peakSensorID == 1 || peakSensorID == 2) {
+			return LEFT;
+		}
+		else if (peakSensorID == 3 || peakSensorID == 4) {
+			return STRAIGHT;
+		}
+		else if (peakSensorID == 5 || peakSensorID == 6) {
+			return RIGHT;
+		}
+		else {
+			return NONE;
+		}
+*/
 
 	}
 

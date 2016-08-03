@@ -6,12 +6,16 @@
 #include "armControl.h"
 
 #define ARR_SIZE 10
+#define fardropDelay 5000
+#define closedropDelay 3500
 namespace nav {
-
+	courseGraph graph = courseGraph();
 	int dir;
 	int neighborCount;
 	int prev_index;
 	int temp_index;
+	int time;
+	
 	int speed = 80;
 
 	int find_index(const courseGraph::node *origin, const courseGraph::node *target) {
@@ -41,7 +45,7 @@ namespace nav {
 		if (dir == BACK)
 			tapeFollow::turnAround();
 	}
-	const courseGraph::node* turn_node(const courseGraph::node *origin, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2,  int direction){
+	const courseGraph::node* turn_node(const courseGraph::node *origin, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2, int direction) {
 		const courseGraph::node *nextNode;
 
 
@@ -49,7 +53,7 @@ namespace nav {
 		//for (int i = 0; i < origin->neighborCount + 1; i++) {
 			//if (origin->neighbors[i] == prev_node1)
 			//	prev_index = i;
-				
+
 		//}
 
 		if (origin->neighborCount == 1) {
@@ -57,11 +61,11 @@ namespace nav {
 			nextNode = origin->neighbors[0];
 		}
 
-		else if (origin->neighborCount== 2) {
+		else if (origin->neighborCount == 2) {
 			if (prev_index == 0) {
 				turn_dir(LEFT);
 				nextNode = origin->neighbors[1];
-			} 
+			}
 			else {
 				turn_dir(RIGHT);
 				nextNode = origin->neighbors[0];
@@ -88,7 +92,7 @@ namespace nav {
 						prev_index -= 2;
 					nextNode = origin->neighbors[(prev_index)];
 				}
-			
+
 				else if (dir == RIGHT && origin->prevDir(prev_index) != NULL) {
 					turn_dir(dir);
 					nextNode = origin->prevDir(prev_index);// TODO: put safeguard against turning to NULL here 
@@ -96,25 +100,25 @@ namespace nav {
 
 				else if ((dir == RIGHT && origin->prevDir(prev_index) == NULL)) {
 					turn_dir(STRAIGHT);
-					nextNode = origin->neighbors[(prev_index+2)%4];
+					nextNode = origin->neighbors[(prev_index + 2) % 4];
 				}
 
 				else if (dir == STRAIGHT) {
 					if (origin->neighbors[(prev_index + 2) % 4] != NULL) {
 						turn_dir(STRAIGHT);
-						nextNode=origin->neighbors[(prev_index + 2) % 4];
+						nextNode = origin->neighbors[(prev_index + 2) % 4];
 
 					}
 					else {
 						turn_dir(LEFT);
 						nextNode = origin->nextDir(prev_index);
 					}
-			
+
 				}
 
-				
-				
-			 }
+
+
+			}
 
 			else {
 
@@ -130,8 +134,8 @@ namespace nav {
 				if (abs(prev_index - temp_index) == 2) {
 					turn_dir(STRAIGHT);
 				}
-				else if(abs(prev_index - temp_index) == 1){
-					if (prev_index>temp_index) {
+				else if (abs(prev_index - temp_index) == 1) {
+					if (prev_index > temp_index) {
 						turn_dir(RIGHT);
 					}
 					else {
@@ -158,18 +162,18 @@ namespace nav {
 
 	const courseGraph::node* turn(const courseGraph::node *curr_node, const courseGraph::node *prev_node1, const courseGraph::node *prev_node2) {
 		//const courseGraph::node *next_node;
-		
+
 		dir = mux::cycleReadIR();
-		
+
 		//if signal detected, dir = -1
 		return turn_node(curr_node, prev_node1, prev_node2, dir);//mechanically turn towards 'dir'
 		//else
 
-			
-		 
+
+
 	}
 
-	void move_to(const courseGraph::node *prev_node,const courseGraph::node *origin, const courseGraph::node *next_node) {
+	void move_to(const courseGraph::node *prev_node, const courseGraph::node *origin, const courseGraph::node *next_node) {
 		int next_index;
 		int prev_index;
 		next_index = find_index(origin, next_node);
@@ -179,7 +183,7 @@ namespace nav {
 			turn_dir(STRAIGHT);
 		}
 		else if (abs(prev_index - next_index) == 1) {
-			if (prev_index>next_index) {
+			if (prev_index > next_index) {
 				turn_dir(RIGHT);
 			}
 			else {
@@ -200,7 +204,7 @@ namespace nav {
 
 
 	const courseGraph::node* move_min(const courseGraph::node *prev_node, const courseGraph::node *curr_node) {
-		int min = 999;
+		int min = 99;
 		const courseGraph::node* min_node;
 		for (int i = 0; i < 4; i++) {
 			if (curr_node->neighbors[i]->ID < min) {
@@ -216,29 +220,80 @@ namespace nav {
 
 
 	void dropoff(const courseGraph::node *prev_node, const courseGraph::node *curr_node) {
-		const courseGraph::node *temp_node;
-		while (temp_node->ID != 1 || temp_node->ID != 2 || temp_node->ID != 3 || temp_node->ID != 4) {
+		const courseGraph::node *temp_node = curr_node;
+
+		while (temp_node->ID != 1 && temp_node->ID != 2 && temp_node->ID != 3 && temp_node->ID != 4) {
+			LCD.home(); LCD.print("cN:");
+			LCD.print(curr_node->ID);
+			tapeFollow::followTape(speed);
 			if (tapeFollow::intersectionDetected) {
-				temp_node = move_min(prev_node, curr_node);				
+				temp_node = move_min(prev_node, curr_node);
+			
 				move_to(prev_node, curr_node, temp_node);
-				
+
 				prev_node = curr_node;
 				curr_node = temp_node;
-			}
-			
-			tapeFollow::followTape(speed);
-			
+				tapeFollow::intersectionDetected = false;
 
+			}
 		}
+
+		while (!tapeFollow::intersectionDetected) {
+			tapeFollow::followTape(speed);
+		}
+		
+
+		if (temp_node->ID == 1 || temp_node->ID == 2) {
+			tapeFollow::turnRight();
+			time = millis();
+			if (temp_node->ID == 1) {
+				while (millis() - time < fardropDelay)
+					tapeFollow::followTape(speed);
+			}
+			 
+			else {
+				while (millis() - time < closedropDelay)
+					tapeFollow::followTape(speed);
+			
+			}		
+				//TODO: Add arm dropoff to left
+		}
+		
+
+
+
+		else if (temp_node->ID == 3 || temp_node->ID == 4) {
+			tapeFollow::turnLeft();
+			time = millis();
+			if (temp_node->ID == 4) {
+				while (millis() - time < fardropDelay)
+					tapeFollow::followTape(speed);
+			}
+
+			else {
+				while (millis() - time < closedropDelay)
+					tapeFollow::followTape(speed);
+
+			}
+			//TODO: Add arm dropoff to right
+		}
+
+		tapeFollow::intersectionDetected = false;
+
+
+	}
+
+
+
 
 		
 	
 
-	}
+	
 	
 
 	
-	void checkAdjacentPassengers(){
+	int checkAdjacentPassengers(){
 		int dir = mux::detectAdjacentPassenger(); //TODO:Refine the close-range IR input v/s long-range
 		if (dir != NONE) {
 			switch (dir){
@@ -246,14 +301,20 @@ namespace nav {
 				motor.stop_all();
 				delay(500);
 				arm::pickup(RIGHT);
+				//arm::extend_grab();
+				//delay(4000);
+				//arm::retract();
+				//delay(4000);
 				break;
 			case LEFT: //pickup from left
 				motor.stop_all();
 				delay(500);
-				arm::pickup(LEFT);
+				//arm::pickup(LEFT);
 				break;
 			}
 		}
+		return dir;
 	}
+	
 
 }

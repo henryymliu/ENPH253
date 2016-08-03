@@ -7,7 +7,9 @@
 namespace tapeFollow{
 
 //int error = 0;
+	int bumper_switch = 6;
 	bool intersectionDetected = false;
+	bool collision = false;
 	int error;
 	double kp;
 	double kd;
@@ -77,7 +79,7 @@ namespace tapeFollow{
 				intersectLeft = analogRead(ID_L);
 				if (intersectLeft >= thresh) {
 					intersectionDetected = true;
-					turnLeft();
+					//turnLeft();
 				}
 			}
 			else if (intersectRight >= thresh) {
@@ -85,7 +87,7 @@ namespace tapeFollow{
 				intersectRight = analogRead(ID_R);
 				if (intersectRight >= thresh) {
 					intersectionDetected = true;
-					turnRight();
+					//turnRight();
 				}
 			}
 			
@@ -144,13 +146,20 @@ namespace tapeFollow{
 		lerr = error;
 		motor.speed(L_MOTOR, motorSpeed + cons);
 		motor.speed(R_MOTOR, motorSpeed - cons);
+
+		//look for collision on bumper
+		if (!digitalRead(bumper_switch))
+			collision = true;
 	}
 
-
+	
 		//future consideration: make angle a parameter to optimize turning, maybe power too
 
 		//for turning, turn left/right until tape detectors redetect tape
 		void turnLeft() {
+			//LCD.clear();LCD.home();
+			LCD.setCursor(0, 1);
+			LCD.print("TURNING LEFT");
 			motor.speed(L_MOTOR, -55);
 			motor.speed(R_MOTOR, 55);
 			delay(INTERSECTION_TURNING_DELAY_MILLI);
@@ -162,6 +171,8 @@ namespace tapeFollow{
 			currTime = millis();
 		}
 		void turnRight() {
+			LCD.setCursor(0, 1);
+			LCD.print("TURNING RIGHT");
 			motor.speed(L_MOTOR, 55);
 			motor.speed(R_MOTOR, -55);
 			delay(INTERSECTION_TURNING_DELAY_MILLI);
@@ -174,6 +185,8 @@ namespace tapeFollow{
 		}
 
 		void turnAround() {
+			LCD.setCursor(0, 1);
+			LCD.print("TURNING AROUND");
 			motor.speed(L_MOTOR, 55);
 			motor.speed(R_MOTOR, -55);
 			delay(INTERSECTION_TURNING_DELAY_MILLI);

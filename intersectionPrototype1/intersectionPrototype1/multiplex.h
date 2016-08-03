@@ -23,7 +23,7 @@ namespace mux {
 	//near IR params, ALL TEMPORARY FOR NOW
 	const int NEAR_IR_LEFT = 3;
 	const int NEAR_IR_RIGHT = 2;
-	const int NEAR_IR_THRESH = 600;
+	extern int NEAR_IR_THRESH;
 
 	//IR digital outs
 	const int MUXOUT_1_PINS[] = { 11,9,10};

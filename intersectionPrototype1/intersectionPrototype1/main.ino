@@ -23,34 +23,51 @@ void setup() {
 
 	#include <phys253setup.txt>
 	Serial.begin(9600);
-	
+	//RCServo0.write(20);
+	RCServo1.write(140);//GRIP
+	RCServo2.write(160); //
 
 }
 
 //tapeFollow tf;
 
-courseGraph graph = courseGraph();
+//courseGraph graph = courseGraph();
+
 const courseGraph::node* next_node;
-const courseGraph::node* curr_node = &graph.n4;
-const courseGraph::node* prev_node1 = &graph.n10;
-const courseGraph::node* prev_node2 = &graph.n3;
+const courseGraph::node* currr_node = &nav::graph.n12;
+const courseGraph::node* prev_node1 = &nav::graph.n17;
+const courseGraph::node* prev_node2 = &nav::graph.n16;
+int c = 0;
 
 void loop() {
 	menu::menuLoop();
-	/*
-	//tapeFollow::followTape(80);
 
-	tapeFollow::followTape(70);
-	LCD.clear(); LCD.home();
-	//if (tapeFollow::c >= 30) {
+	/*
+	arm::stow();
+	arm::pickup(RIGHT);
+	delay(1000);
+	arm::release();
+	delay(3000);
+	*/
+	//tapeFollow::followTape(80);
+	
+	
+	
+	//tapeFollow::followTape(80);
+	//c++
+	//LCD.clear(); LCD.home();
+	/*
+	if (tapeFollow::c >= 30) {
 		LCD.print("NN:");
 		LCD.print(next_node->ID);
-	//}
+		LCD.print("PN:");
+		LCD.print(prev_node1->ID);
+	}
 	//nav::checkAdjacentPassengers();
 	
-	
+	/*
 	if (tapeFollow::intersectionDetected) {
-		//delay(100);
+		//delay(60);
 		tapeFollow::followTape(10);
 
 		next_node = nav::turn(curr_node, prev_node1, prev_node2);
@@ -62,6 +79,14 @@ void loop() {
 	
 	tapeFollow::intersectionDetected = false;
 	*/
+	//arm::turn_arm(2);
+	//delay(10000);
+	//RCServo1.write(10);//GRIP
+	//RCServo2.write(170);
+	
+
+	//nav::dropoff(prev_node1, currr_node);
+	
 
 }
 
