@@ -115,7 +115,11 @@ courseGraph::courseGraph(){
 	n10.preferred1 = &n4;
 	n10.preferred2 = &n9;
 
+	
 	n11.addNeighbor(&n5);
+	n11.addNeighbor(NULL);
+	n11.addNeighbor(NULL);
+	n11.addNeighbor(NULL);
 
 
 	n12.addNeighbor(&n6);
@@ -140,17 +144,36 @@ courseGraph::courseGraph(){
 	n14.preferred2 = &n20;
 	
 	n15.addNeighbor(&n10);
+	n15.addNeighbor(NULL);
+	n15.addNeighbor(NULL);
+	n15.addNeighbor(NULL);
 
+	n16.addNeighbor(NULL);
 	n16.addNeighbor(&n12);
+	n16.addNeighbor(NULL);
+	n16.addNeighbor(NULL);
+
 
 	n17.addNeighbor(&n12);
+	n17.addNeighbor(NULL);
+	n17.addNeighbor(NULL);
+	n17.addNeighbor(NULL);
 
 	n18.addNeighbor(&n13);
+	n18.addNeighbor(NULL);
+	n18.addNeighbor(NULL);
+	n18.addNeighbor(NULL);
+
 
 	n19.addNeighbor(&n14);
+	n19.addNeighbor(NULL);
+	n19.addNeighbor(NULL);
+	n19.addNeighbor(NULL);
 
+	n20.addNeighbor(NULL);
+	n20.addNeighbor(NULL);
 	n20.addNeighbor(&n14);
-
+	n20.addNeighbor(NULL);
 
 	/**
 	nod/e nb;

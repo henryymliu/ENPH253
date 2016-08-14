@@ -25,7 +25,7 @@ void setup() {
 	Serial.begin(9600);
 	//RCServo0.write(20);
 	RCServo1.write(140);//GRIP
-	RCServo2.write(160); //
+	RCServo2.write(110); //
 
 }
 
@@ -33,15 +33,30 @@ void setup() {
 
 //courseGraph graph = courseGraph();
 
-const courseGraph::node* next_node;
-const courseGraph::node* currr_node = &nav::graph.n12;
-const courseGraph::node* prev_node1 = &nav::graph.n17;
-const courseGraph::node* prev_node2 = &nav::graph.n16;
-int c = 0;
-
+//const courseGraph::node* next_node;
+//const courseGraph::node* currr_node = &nav::graph.n12;
+//const courseGraph::node* prev_node1 = &nav::graph.n17;
+//const courseGraph::node* prev_node2 = &nav::graph.n16;
+//int c = 0;
+//int temp;
 void loop() {
 	menu::menuLoop();
-
+	//arm::pickup(RIGHT);
+	//delay(2000);
+	/*
+	delay(2000);
+	temp = mux::detectAdjacentPassenger();
+	
+	LCD.clear(); LCD.home();
+	if (temp == RIGHT) {
+		LCD.print("PR");
+	}
+	else if(temp==LEFT) {
+		LCD.print("PL");
+	}
+		//RCServo1.write(100);
+	//delay(1000);
+	//RCServo1.write(150);
 	/*
 	arm::stow();
 	arm::pickup(RIGHT);
@@ -57,7 +72,7 @@ void loop() {
 	//c++
 	//LCD.clear(); LCD.home();
 	/*
-	if (tapeFollow::c >= 30) {
+	++if (tapeFollow::c >= 30) {
 		LCD.print("NN:");
 		LCD.print(next_node->ID);
 		LCD.print("PN:");

@@ -6,7 +6,7 @@
 
 namespace eepromParams {
 	uint8_t TF_KP = 8;
-	uint8_t TF_KD = 12;
+	uint8_t TF_KD = 30;
 	uint16_t TF_thresh = 150;
 	uint8_t TURNTABLE_angle = 0;
 	uint8_t ACTUATOR_pos = 0;

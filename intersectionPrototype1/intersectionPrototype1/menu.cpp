@@ -17,6 +17,10 @@ namespace menu{
 	buttonPressStates lastButtonState = none;
 	bool canModifyValues = false;
 
+	const courseGraph::node* next_node;
+	const courseGraph::node* currN;
+	const courseGraph::node* prevN1;
+
 	int dispTime = 0;
 	PIDParamsMenu pid;
 	void menuLoop(){
@@ -144,22 +148,25 @@ namespace menu{
 				}
 				break;
 			case navigationTest: {
-				const courseGraph::node* next_node;
+				//const courseGraph::node* next_node;
 				LCD.clear();LCD.home();
 				LCD.print("cN:");
-				const courseGraph::node* currN = nav::graph.nodeArray[(int)map(knob(6), 0, 1023, 0, 19)];
+				currN =nav::graph.nodeArray[(int)map(knob(6), 5, 1015, 0, 19)];
 				LCD.print(currN->ID);
 
-				LCD.setCursor(6, 0);
+				LCD.setCursor(4, 0);
 				LCD.print("pN1:");
-				const courseGraph::node* prevN1 = currN->neighbors[(int)map(knob(7), 0, 1023, 0, 3)];
+				prevN1 = currN->neighbors[(int)map(knob(7), 5, 1000, 0, 3)];
 				LCD.print(prevN1->ID);
 				const courseGraph::node* prevN2 = prevN1->neighbors[0];
 
 				switch (lastButtonState) {
 				case longStartButton: {
 					while (!stopbutton()) {
+						
 						LCD.clear();LCD.home();
+						/*
+
 						LCD.print("IR ");
 						switch (nav::dir) {
 						case 0:
@@ -178,31 +185,57 @@ namespace menu{
 							LCD.print("N");
 							break;
 						}
-
+						*/
+						//implement dropoff flag later
 						int passengerDir = nav::checkAdjacentPassengers();
-						LCD.setCursor(7, 0);
+						
+						//LCD.setCursor(7, 0);
 						switch (passengerDir) {
 						case LEFT:
-							LCD.print("PL");
-							nav::dropoff;
+							nav::dropoff(prevN1, currN);
 							break;
 						case RIGHT:
-							LCD.print("PR");
-							nav::dropoff;
+							nav::dropoff(prevN1, currN);
+							break;
+
+						}
+						/*
+						//switch (passengerDir) {
+						//case LEFT:
+							//tapeFollow::turnAround();
+							//unsigned int t = millis();
+							//while (millis() - t < 1500) {
+							//	motor.speed(LEFTMOTOR)
+							//}
+							//arm::pickup(LEFT);
+							//LCD.print("PL");
+							//nav::dropoff(prevN1, currN);
+							break;
+						case RIGHT:
+							motor.stop(L_MOTOR);
+							motor.stop(R_MOTOR);
+							arm::pickup(RIGHT);
+							//LCD.print("PR");
+							delay(1000);
+							nav::dropoff(prevN1, currN);
+							motor.stop_all();
+							LCD.print("k chill");
 							break;
 							
 						}
-
+						*/
 						LCD.setCursor(11, 0);
-						LCD.print("NN:"); LCD.print(next_node->ID);
+						LCD.print("CN:"); LCD.print(currN->ID);
 						LCD.setCursor(0, 1);
 						//turn functions printed here
 
-						tapeFollow::followTape(80);
+						tapeFollow::followTape(75);
 						if (tapeFollow::intersectionDetected) {
-							tapeFollow::followTape(10);
-
+							tapeFollow::followTape(5);
+							
 							next_node = nav::turn(currN, prevN1, prevN2);
+							LCD.setCursor(8, 1);
+							LCD.print("Inter");
 							prevN1 = currN;
 							prevN2 = prevN1;
 							currN = next_node;
@@ -212,7 +245,7 @@ namespace menu{
 						
 
 						if (tapeFollow::collision) {
-							tapeFollow::turnAround;
+							tapeFollow::turnAround();
 							currN = prevN1;
 							prevN1 = next_node;
 							tapeFollow::collision = false;
@@ -235,10 +268,16 @@ namespace menu{
 				LCD.setCursor(6, 0);
 				LCD.print(mux::readMUXIn(2,mux::NEAR_IR_RIGHT));
 
-				mux::NEAR_IR_THRESH = knob(6);
+				
 				LCD.setCursor(0, 1);
 				LCD.print("T:");
 				LCD.print(mux::NEAR_IR_THRESH);
+
+				switch (lastButtonState) {
+				case shortStartButton:
+					mux::NEAR_IR_THRESH = knob(6);
+					break;
+				}
 				break;
 
 			case armCalibTest:
@@ -253,7 +292,7 @@ namespace menu{
 				LCD.setCursor(0, 1);
 				int tiltPos = map(knob(6), 0, 1023, 0, 180);
 				LCD.print("TA:"); LCD.print(tiltPos);
-				RCServo2.write(tiltPos);
+				//RCServo2.write(tiltPos);
 
 				LCD.setCursor(6, 1);
 				int turnPos = map(knob(7), 0, 1023, -15, 15);
@@ -262,7 +301,10 @@ namespace menu{
 				//arm::turn_arm(turnPos);
 				
 				switch (lastButtonState) {
-					
+				case longStartButton:
+					arm::armActuator.rotaryPosition = 0;
+					arm::turntable.rotaryPosition = 0;
+					break;
 				}
 				break;
 				

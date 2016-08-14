@@ -13,6 +13,7 @@ namespace arm {
 	//pickup functions
 	void turn_arm(int pos);
 	void turn_actuator(int pos);
+	void extend();
 	void extend_grab();
 	void retract();
 	void grab();
@@ -48,7 +49,7 @@ namespace arm {
 	extern motorEncoder armActuator;
 
 	const int TILTSERVO_PICKUP_ANGLE = 165;
-	const int TILTSERVO_STOW_ANGLE = 100;
+	const int TILTSERVO_STOW_ANGLE = 110;
 	double turntableAngle(motorEncoder tt);
 }
 

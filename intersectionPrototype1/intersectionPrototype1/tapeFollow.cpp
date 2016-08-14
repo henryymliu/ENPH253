@@ -7,9 +7,11 @@
 namespace tapeFollow{
 
 //int error = 0;
-	int bumper_switch = 6;
+	int bumper_switch1 = 5;
+	int bumper_switch2 = 4;
 	bool intersectionDetected = false;
 	bool collision = false;
+	bool dropoff = false;
 	int error;
 	double kp;
 	double kd;
@@ -27,11 +29,11 @@ namespace tapeFollow{
 	double d;
 	double cons;
 	int m = 1;
-	int q;
+	int q = 1;
 
 	int intersectLeft;
 	int intersectRight;
-	unsigned long currTime;
+	unsigned long currTime = millis();
 
 		//same tape following algo as in lab 5
 	void followTape(int motorSpeed) {
@@ -41,23 +43,23 @@ namespace tapeFollow{
 		kp = eepromParams::TF_KP;
 		kd = eepromParams::TF_KD;
 		thresh = eepromParams::TF_thresh;
-		int tlthresh = 40;
+		//int tlthresh = 40;
 		left = analogRead(TD_L);
 		right = analogRead(TD_R);
 
 		//on tape
-		if ((left >= tlthresh) && (right >= thresh))
+		if ((left >= thresh) && (right >= thresh))
 			error = 0;
 		//slightly to the right
-		if ((left >= tlthresh) && (right < thresh))
+		if ((left >=thresh) && (right < thresh))
 			error = -1;
 
 		//slightly to the left
-		if ((left < tlthresh) && (right >= thresh))
+		if ((left < thresh) && (right >= thresh))
 			error = 1;
 
 		//welp, we're way off
-		if ((left < tlthresh) && (right < thresh)) {
+		if ((left < thresh) && (right < thresh)) {
 			if (lerr > 0) error = 3; //left
 			if (lerr < 0) error = -3; //right
 		}
@@ -69,7 +71,7 @@ namespace tapeFollow{
 		//delay to ensure robot is successfully tape following before detecting another intersection to prevent
 		//false positives
 
-		
+		//currTime = millis();
 		if ((millis() - currTime) > INTERSECTION_TURNING_DEADZONE) {
 			intersectLeft = analogRead(ID_L);
 			intersectRight = analogRead(ID_R);
@@ -79,6 +81,7 @@ namespace tapeFollow{
 				intersectLeft = analogRead(ID_L);
 				if (intersectLeft >= thresh) {
 					intersectionDetected = true;
+					currTime = millis();
 					//turnLeft();
 				}
 			}
@@ -87,6 +90,7 @@ namespace tapeFollow{
 				intersectRight = analogRead(ID_R);
 				if (intersectRight >= thresh) {
 					intersectionDetected = true;
+					currTime = millis();
 					//turnRight();
 				}
 			}
@@ -101,7 +105,7 @@ namespace tapeFollow{
 		}
 
 		p = kp*error;
-		d = kd*(((double)error - (double)recerr) / ((double)q + (double)m));
+		d = 10*kd*(((double)error - (double)recerr) / ((double)q + (double)m));
 		cons = p + d;
 		//Serial.print("cons: "); Serial.print(cons);
 		//Serial.print("err: "); Serial.print(error + "\n");
@@ -142,14 +146,19 @@ namespace tapeFollow{
 
 		c++;
 		*/
-		//m++;
+	    m++;
 		lerr = error;
 		motor.speed(L_MOTOR, motorSpeed + cons);
 		motor.speed(R_MOTOR, motorSpeed - cons);
 
 		//look for collision on bumper
-		if (!digitalRead(bumper_switch))
-			collision = true;
+		if (!digitalRead(bumper_switch1) || !digitalRead(bumper_switch2)) {
+			//motor.stop_all();
+			delay(100);
+			if (!digitalRead(bumper_switch1) || !digitalRead(bumper_switch2)) {
+				collision = true;
+			}
+		}
 	}
 
 	
@@ -159,7 +168,7 @@ namespace tapeFollow{
 		void turnLeft() {
 			//LCD.clear();LCD.home();
 			LCD.setCursor(0, 1);
-			LCD.print("TURNING LEFT");
+			LCD.print("TURN L");
 			motor.speed(L_MOTOR, -55);
 			motor.speed(R_MOTOR, 55);
 			delay(INTERSECTION_TURNING_DELAY_MILLI);
@@ -172,7 +181,7 @@ namespace tapeFollow{
 		}
 		void turnRight() {
 			LCD.setCursor(0, 1);
-			LCD.print("TURNING RIGHT");
+			LCD.print("TURN R");
 			motor.speed(L_MOTOR, 55);
 			motor.speed(R_MOTOR, -55);
 			delay(INTERSECTION_TURNING_DELAY_MILLI);
@@ -185,14 +194,31 @@ namespace tapeFollow{
 		}
 
 		void turnAround() {
+			bool wiggle = false;
 			LCD.setCursor(0, 1);
-			LCD.print("TURNING AROUND");
-			motor.speed(L_MOTOR, 55);
-			motor.speed(R_MOTOR, -55);
-			delay(INTERSECTION_TURNING_DELAY_MILLI);
+			motor.stop(L_MOTOR);
+			motor.stop(R_MOTOR);
+			LCD.print("TURN A");
+			unsigned long time = millis();
+			while (millis() - time < 500) {
+				motor.speed(L_MOTOR,-50);
+				motor.speed(R_MOTOR, -50);
+			}
+			motor.speed(L_MOTOR, 60);
+			motor.speed(R_MOTOR, -60);
+			delay(INTERSECTION_TURNING_DELAY_MILLI + 900);
 			left = analogRead(TD_L);
 			while (left < thresh) {
 				left = analogRead(TD_L);
+				if (millis() - time > 4000) {
+
+					motor.speed(L_MOTOR, 50);
+					motor.speed(R_MOTOR, 50);
+					delay(300);
+					motor.speed(L_MOTOR, 60);
+					motor.speed(R_MOTOR, -60);
+					time = millis();
+				}
 			}
 			error = 0;
 			currTime = millis();

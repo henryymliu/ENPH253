@@ -9,7 +9,7 @@
 
 namespace mux {
 	int reading;
-	int NEAR_IR_THRESH = 650;
+	int NEAR_IR_THRESH = 800;
 	//this is messy, refactor later if performance issues arise
 	double readMUXIn(int muxChip, int channel) {
 		switch (muxChip){

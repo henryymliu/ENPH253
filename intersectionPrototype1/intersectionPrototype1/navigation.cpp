@@ -4,6 +4,7 @@
 #include "multiplex.h"
 #include "phys253.h"
 #include "armControl.h"
+#include "menu.h"
 
 #define ARR_SIZE 10
 #define fardropDelay 5000
@@ -14,9 +15,10 @@ namespace nav {
 	int neighborCount;
 	int prev_index;
 	int temp_index;
-	int time;
+	unsigned long time;
+	bool collide = false;
 	
-	int speed = 80;
+	int speed = 75;
 
 	int find_index(const courseGraph::node *origin, const courseGraph::node *target) {
 		for (int i = 0; i < 4; i++) {
@@ -40,8 +42,11 @@ namespace nav {
 			delay(150);
 			tapeFollow::turnRight();
 		}
-		if (dir == STRAIGHT)
+		if (dir == STRAIGHT) {
+			delay(50);
 			tapeFollow::followTape(speed); //TODO: which speed?
+			
+		}
 		if (dir == BACK)
 			tapeFollow::turnAround();
 	}
@@ -56,12 +61,12 @@ namespace nav {
 
 		//}
 
-		if (origin->neighborCount == 1) {
-			turn_dir(BACK);
-			nextNode = origin->neighbors[0];
-		}
+		//if (origin->neighborCount == 1) {
+			//turn_dir(BACK);
+			//nextNode = origin->neighbors[0];
+		//}
 
-		else if (origin->neighborCount == 2) {
+		if (origin->neighborCount == 2) {
 			if (prev_index == 0) {
 				turn_dir(LEFT);
 				nextNode = origin->neighbors[1];
@@ -146,9 +151,9 @@ namespace nav {
 
 				else {
 					if (prev_index > temp_index)
-						turn_dir(LEFT);
-					else
 						turn_dir(RIGHT);
+					else
+						turn_dir(LEFT);
 
 				}
 			}
@@ -223,18 +228,31 @@ namespace nav {
 		const courseGraph::node *temp_node = curr_node;
 
 		while (temp_node->ID != 1 && temp_node->ID != 2 && temp_node->ID != 3 && temp_node->ID != 4) {
-			LCD.home(); LCD.print("cN:");
-			LCD.print(curr_node->ID);
+			//LCD.home(); LCD.print("cN:");
+			//LCD.print(curr_node->ID);
 			tapeFollow::followTape(speed);
 			if (tapeFollow::intersectionDetected) {
+				if (collide) {
+					tapeFollow::turnAround();
+					tapeFollow::collision = false;
+					collide = false;
+				}
 				temp_node = move_min(prev_node, curr_node);
-			
+				//move_to()
 				move_to(prev_node, curr_node, temp_node);
+
 
 				prev_node = curr_node;
 				curr_node = temp_node;
+				//LCD.home(); LCD.print("cN:");
+				//LCD.print(curr_node->ID);
 				tapeFollow::intersectionDetected = false;
 
+			}
+			else if (tapeFollow::collision) {
+				tapeFollow::turnAround();
+				collide = true;
+				//tapeFollow::collision = false;
 			}
 		}
 
@@ -244,6 +262,8 @@ namespace nav {
 		
 
 		if (temp_node->ID == 1 || temp_node->ID == 2) {
+			menu::prevN1 = &nav::graph.n2;
+			menu::currN = &nav::graph.n3;
 			tapeFollow::turnRight();
 			time = millis();
 			if (temp_node->ID == 1) {
@@ -254,15 +274,34 @@ namespace nav {
 			else {
 				while (millis() - time < closedropDelay)
 					tapeFollow::followTape(speed);
+				}		
+				
+			tapeFollow::turnAround();
+			time = millis();
+			while (millis() - time < 1000) {
+					tapeFollow::followTape(50);
+			}
+			delay(1000);
+			motor.stop_all();
+			delay(200);
+			arm::extend();
+			delay(100);
 			
-			}		
-				//TODO: Add arm dropoff to left
+			arm::release();
+			delay(200);
+			arm::retract();
+			delay(200);
+			tapeFollow::turnAround();
+
+
 		}
 		
 
 
 
 		else if (temp_node->ID == 3 || temp_node->ID == 4) {
+			menu::prevN1 = &nav::graph.n3;
+			menu::currN = &nav::graph.n2;
 			tapeFollow::turnLeft();
 			time = millis();
 			if (temp_node->ID == 4) {
@@ -275,28 +314,24 @@ namespace nav {
 					tapeFollow::followTape(speed);
 
 			}
-			//TODO: Add arm dropoff to right
+
+			//tapeFollow::turnAround();
+			delay(500);
+			arm::release();
+		
 		}
 
+		//nav::
 		tapeFollow::intersectionDetected = false;
 
 
 	}
 
-
-
-
-		
-	
-
-	
-	
-
 	
 	int checkAdjacentPassengers(){
-		int dir = mux::detectAdjacentPassenger(); //TODO:Refine the close-range IR input v/s long-range
-		if (dir != NONE) {
-			switch (dir){
+		int passDir = mux::detectAdjacentPassenger(); //TODO:Refine the close-range IR input v/s long-range
+		if (passDir != NONE) {
+			switch (passDir){
 			case RIGHT: //pickup from right
 				motor.stop_all();
 				delay(500);
@@ -309,11 +344,11 @@ namespace nav {
 			case LEFT: //pickup from left
 				motor.stop_all();
 				delay(500);
-				//arm::pickup(LEFT);
+				arm::pickup(LEFT);
 				break;
 			}
 		}
-		return dir;
+		return passDir;
 	}
 	
 

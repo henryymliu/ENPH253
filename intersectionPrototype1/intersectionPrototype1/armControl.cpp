@@ -6,27 +6,29 @@
 #include "Arduino.h"
 #include "phys253.h"
 #include "navigation.h"
+#include "tapeFollow.h"
 
 #define PICKUP_SWITCH 0
 #define ARM_SWITCH 1
 #define ACTUATOR 1
 #define ACTUATOR_SPEED -50
 #define PICKUP_DELAY 3000
-#define RETRACT_DELAY 2500
+#define RETRACT_DELAY 3000
 #define LEFT_ANGLE 15
 #define RIGHT_ANGLE -15
 #define UP_ANGLE 100
 #define PLANE_ANGLE 15
+#define TURN_DELAY 1000
 
 
-int time;
+unsigned long time;
 namespace arm {
 
 	motorEncoder turntable = motorEncoder(tt_ePR, tt_ePL);
 	motorEncoder armActuator = motorEncoder(aa_ePR, aa_ePL);
 	const int MOVEMENT_TIMEOUT = 2000;
 	void grab() {
-		RCServo1.write(0);   //claw attached to RCServo 1
+		RCServo1.write(90);   //claw attached to RCServo 1
 	}
 
 	void vert_move(int angle) { //vertical movement from RCServo 2
@@ -112,14 +114,28 @@ namespace arm {
 		motor.stop(1);
 	}
 
+	void extend() {
+
+		time = millis();
+
+		//digitalRead(PICKUP_SWITCH) &&
+		while ((millis() - time<PICKUP_DELAY)) {//TODO:add alternative if passenger not picked up
+			motor.speed(ACTUATOR, ACTUATOR_SPEED);//actuator and have feedback
+												  //armActuator.readEncoderAngle();
+		}
+		motor.stop(ACTUATOR);
+
+
+		//de_extend arm, move turntable towards bucket(TODO:Have feedback from turntable), place passenger in bucket
+	}
 	void extend_grab() {
 
 		time = millis();
 		
-		
-		while (digitalRead(PICKUP_SWITCH) && (millis()-time<PICKUP_DELAY)) {//TODO:add alternative if passenger not picked up
+		//digitalRead(PICKUP_SWITCH) &&
+		while ( (millis()-time<PICKUP_DELAY)) {//TODO:add alternative if passenger not picked up
 			motor.speed(ACTUATOR,ACTUATOR_SPEED);//actuator and have feedback
-			armActuator.readEncoderAngle();
+			//armActuator.readEncoderAngle();
 		}
 		motor.stop(ACTUATOR);
 		grab();
@@ -132,27 +148,65 @@ namespace arm {
 		time = millis();
 		while ((millis() - time<RETRACT_DELAY)) {
 			motor.speed(ACTUATOR, -ACTUATOR_SPEED);
-			armActuator.readEncoderAngle();
+			//armActuator.readEncoderAngle();
 		}
 		motor.stop(ACTUATOR);
 	}
 
 	void pickup(int dir) {//assumes robot is aligned
 		
-		if (dir == LEFT)
-			turn_arm(LEFT_ANGLE);
-		else
-			turn_arm(RIGHT_ANGLE);
-		vert_move(TILTSERVO_PICKUP_ANGLE);
-		turn_actuator(15);
-		extend_grab();
-		delay(1000);
+		//if (dir == LEFT) {
+			//turn_arm(LEFT_ANGLE);
+			//tapeFollow::turnLeft();
+		//}
+		//else
+			//turn_arm(RIGHT_ANGLE);
+		//turn_actuator(15);
+		
+		if (dir == RIGHT) {
+			release(); //careful
+			delay(500);
+			vert_move(160);
+			delay(500);
+			extend_grab();
+			delay(500);
+			retract();
+			delay(500);
+		}
+		else if(dir==LEFT) {
+			tapeFollow::turnAround();
+			motor.stop_all();
+			delay(100);
+			time = millis();
+			while (millis() - time < TURN_DELAY || mux::readMUXIn(2,mux::NEAR_IR_RIGHT) < mux::NEAR_IR_THRESH){
+				
+				motor.speed(L_MOTOR, 20);
+				motor.speed(R_MOTOR, 20);
+				
+			}
+			motor.stop_all();
+			release();
+			//delay(400);
+			delay(500);
+			vert_move(160);
+			delay(200);
+			extend_grab();
+			delay(500);
+			retract();
+			delay(500);
+			tapeFollow::turnAround();
+		}
 		/*
 		vert_move(TILTSERVO_STOW_ANGLE);
 		turn_arm(0);
 		retract();
 		*/
-		stow();
+		//stow();
+		vert_move(120);
+		//turn_actuator(15);
+		//if (dir == LEFT) {
+		//	tapeFollow::turnRight();
+		//}
 		
 	}
 

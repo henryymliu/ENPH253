@@ -11,6 +11,7 @@
 
 #include <avr\eeprom.h>
 #include "eepromParams.h"
+#include "path.h"
 
 namespace menu{
 	enum menuStates{ Competition, PIDParams, tapeFollowThreshold, tapeFollowTest, navigationTest, IRTest, armCalibTest };
@@ -25,6 +26,10 @@ namespace menu{
 	extern buttonPressStates lastButtonState;
 	void competitionMenuLoop();
 
+	extern const courseGraph::node* next_node;
+	extern const courseGraph::node* currN;
+	extern const courseGraph::node* prevN1;
+
 	struct PIDParamsMenu{
 		
 		enum pidMenuState{display,modify};
@@ -37,6 +42,8 @@ namespace menu{
 	void tapeFollowTestMenuLoop();
 	void navigationTestMenuLoop();
 	void IRTestMenuLoop();
+
+
 }
 
 
