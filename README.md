@@ -1,4 +1,6 @@
 # ENPH253
+Software for Team 9's robot, D.A.W.G., for the 2016 Engineering Physics robotics competition (Uberbots). Website: http://dawgrobot.wordpress.com
+
 <b>INSTALLATION</b>
 
 1. Visual Studio with the Arduino extension must be installed first. 
